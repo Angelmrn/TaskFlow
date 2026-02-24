@@ -1,0 +1,56 @@
+### Variables
+@baseUrl = http://localhost:1234/api
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlhdCI6MTc3MTgwNzA0NywiZXhwIjoxNzcxODA3OTQ3fQ.4wDwZEh2_1r8QT4ojCZlI4B0Z_DPSNl-8NUAVwvTNH0
+@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlhdCI6MTc3MTk0ODg4NCwiZXhwIjoxNzcxOTQ5Nzg0fQ.ZvzPQhBOyN32R3L6DACBgHsgYyKJFHP4-C7-TpOGcpA
+###POST create new user
+POST http://localhost:1234/api/register
+Content-Type: application/json
+
+{
+    "email": "andres@test.com",
+    "username": "Angel",
+    "password": "123456"
+}
+
+###POST login
+POST http://localhost:1234/api/login
+Content-Type: application/json
+
+{
+    "email": "angel@test.com",
+    "password": "123456"
+}
+
+###POST create new user2
+POST http://localhost:1234/api/register
+Content-Type: application/json
+
+{
+    "email": "sara@test.com",
+    "username": "Sara",
+    "password": "234567"
+}
+
+
+
+###POST login2
+POST http://localhost:1234/api/login
+Content-Type: application/json
+
+{
+    "email": "sara@test.com",
+    "password": "234567"
+}
+
+###GET users 
+GET http://localhost:1234/api/me
+Authorization: Bearer {{accessToken}}
+
+###POST refresh token
+POST http://localhost:1234/api/refresh
+Content-Type: application/json
+
+{
+    "refreshToken": "{{refreshToken}}"
+}
+
