@@ -19,12 +19,15 @@ export const register = async (req, res) => {
     const { email, username, password } = result.data;
     const existingUser = await prisma.user.findFirst({
       where: {
-        OR: [{ email }],
+        OR: [{ email }, { username }],
       },
     });
     if (existingUser) {
       return res.status(400).json({
-        message: "email already exists",
+        message:
+          existingUser.email === email
+            ? "Email already exist"
+            : "Username already exist",
       });
     }
 
@@ -58,6 +61,11 @@ export const register = async (req, res) => {
       refreshToken,
     });
   } catch (error) {
+    if (error.code === "P2002") {
+      return res.status(400).json({
+        message: "Email or Username already exist",
+      });
+    }
     console.error(error);
     res.status(500).json({
       message: "Internal server error",

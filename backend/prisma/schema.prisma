@@ -16,6 +16,54 @@ datasource db {
     createdAt     DateTime  @default(now()) @map("created_at")
     updatedAt     DateTime  @updatedAt @map("updated_at")
 
+    ownedProjects Project[] @relation("ProjectOwner")
+    memberProjects ProjectMember[]
+
     @@map("users")
+  }
+
+  model Project {
+    id            Int       @id @default(autoincrement())
+    name          String    @db.VarChar(100)
+    description   String?    @db.Text
+    color         String?   @db.VarChar(7)
+    ownerId       Int       @map("owner_id")
+    createdAt     DateTime  @default(now()) @map("created_at")
+    updatedAt     DateTime  @updatedAt @map("updated_at")
+    
+    //relaciones
+    owner     User    @relation("ProjectOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+    members   ProjectMember[]
+    task      Task[]
+
+    @@map("projects")
+  }
+
+  model ProjectMember {
+    id            Int   @id @default(autoincrement())
+    projectId     Int   @map("project_id")
+    userId        Int    @map("user_id")  
+    role      String   @default("member") @db.VarChar(50) 
+    createdAt     DateTime    @default(now()) @map("created_at")
+
+    project       Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+    user          User  @relation(fields: [userId], references:[id], onDelete: Cascade)
+
+    @@unique([projectId, userId]) //un usuario no puede estar dos veces en el mismo projecto
+    @@map("project_members")
+  }
+
+  model Task {
+    id            Int     @id @default(autoincrement())
+    title         String  @db.VarChar(200)
+    description   String? @db.Text
+    status        String  @default("pending") @db.VarChar(50)
+    projectId     Int     @map("project_id")
+    createdAt     DateTime @default(now()) @map("created_at")
+    updatedAt     DateTime @updatedAt @map("updated_at")
+
+    project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+    @@map("tasks")
   }
 
