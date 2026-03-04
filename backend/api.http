@@ -1,14 +1,14 @@
 ### Variables
 @baseUrl = http://localhost:1234/api
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlhdCI6MTc3MTgwNzA0NywiZXhwIjoxNzcxODA3OTQ3fQ.4wDwZEh2_1r8QT4ojCZlI4B0Z_DPSNl-8NUAVwvTNH0
-@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlhdCI6MTc3MTk0ODg4NCwiZXhwIjoxNzcxOTQ5Nzg0fQ.ZvzPQhBOyN32R3L6DACBgHsgYyKJFHP4-C7-TpOGcpA
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc3MjY2Nzg5MCwiZXhwIjoxNzcyNjY4NzkwfQ.vB7N-IY0JOcrqQc75LrYy-L4FbRXcjGPwGXV6PGpt5A
+@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc3MjY2Nzg5MCwiZXhwIjoxNzczMjcyNjkwfQ.nr-TFuLJXW4d0DQWjhd4svHL76_z1z1ruu5bniMmEbg
 ###POST create new user
 POST http://localhost:1234/api/register
 Content-Type: application/json
 
 {
     "email": "andres@test.com",
-    "username": "Angel",
+    "username": "Andres",
     "password": "123456"
 }
 
@@ -17,7 +17,7 @@ POST http://localhost:1234/api/login
 Content-Type: application/json
 
 {
-    "email": "angel@test.com",
+    "email": "andres@test.com",
     "password": "123456"
 }
 
@@ -53,4 +53,35 @@ Content-Type: application/json
 {
     "refreshToken": "{{refreshToken}}"
 }
+######################### PROJECTS ################################
+###GET projects
+GET http://localhost:1234/api/project
+Authorization: Bearer {{accessToken}}
 
+###GET project by id
+GET http://localhost:1234/api/project/2
+Authorization: Bearer {{accessToken}}
+
+###POST create new Project
+POST http://localhost:1234/api/project/create
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "name": "Project 2",
+    "description": "This is the second project"
+}
+
+###PUT update project
+PUT http://localhost:1234/api/project/update/1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "name": "Project 1 Updated",
+    "description": "This is the first project updated"
+}
+
+###DELETE delete project
+DELETE http://localhost:1234/api/project/delete/1
+Authorization: Bearer {{accessToken}}

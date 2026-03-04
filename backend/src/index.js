@@ -3,6 +3,7 @@ import cors from "cors";
 import morgan from "morgan";
 import dotenv from "dotenv";
 import authRoutes from "./routes/auth.routes.js";
+import projectRoutes from "./routes/project.routes.js";
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api", authRoutes);
+app.use("/api", projectRoutes);
 
 const PORT = process.env.PORT || 1234;
 
