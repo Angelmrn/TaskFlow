@@ -1,8 +1,7 @@
 ### Variables
 @baseUrl = http://localhost:1234/api
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc3MjY2Nzg5MCwiZXhwIjoxNzcyNjY4NzkwfQ.vB7N-IY0JOcrqQc75LrYy-L4FbRXcjGPwGXV6PGpt5A
-@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc3MjY2Nzg5MCwiZXhwIjoxNzczMjcyNjkwfQ.nr-TFuLJXW4d0DQWjhd4svHL76_z1z1ruu5bniMmEbg
-###POST create new user
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTc3MjY3MjM5OCwiZXhwIjoxNzcyNjczMjk4fQ.7OGDEbq7Gs_5KAKRHQH8fBr4PjI6aZ_iOI4z462_imc
+@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTc3MjY3MjM5OCwiZXhwIjoxNzczMjc3MTk4fQ.g8bm2j2OJy1WAVxclwPvxtNVJO2ns-sLUsN631dKMZo
 POST http://localhost:1234/api/register
 Content-Type: application/json
 
@@ -26,8 +25,8 @@ POST http://localhost:1234/api/register
 Content-Type: application/json
 
 {
-    "email": "sara@test.com",
-    "username": "Sara",
+    "email": "angel@test.com",
+    "username": "Angel",
     "password": "234567"
 }
 
@@ -68,8 +67,8 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-    "name": "Project 2",
-    "description": "This is the second project"
+    "name": "Project 3",
+    "description": "This is the third project"
 }
 
 ###PUT update project
@@ -84,4 +83,37 @@ Authorization: Bearer {{accessToken}}
 
 ###DELETE delete project
 DELETE http://localhost:1234/api/project/delete/1
+Authorization: Bearer {{accessToken}}
+
+######################### TASKS ################################
+###GET tasks by project id
+GET http://localhost:1234/api/project/3/tasks
+Authorization: Bearer {{accessToken}}
+
+###POST create new task
+POST http://localhost:1234/api/project/2/task/create
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "title": "Task 3",
+    "description": "This is the third task",
+    "status": "in_progress",
+    "assigneeId": 1
+}
+
+###PUT update task
+PUT http://localhost:1234/api/task/update/1
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "title": "Task 1 Updated",
+    "description": "This is the first task updated",
+    "status": "in_progress",
+    "assigneeId": 2
+}
+
+###DELETE delete task
+DELETE http://localhost:1234/api/task/delete/3
 Authorization: Bearer {{accessToken}}

@@ -2,7 +2,7 @@ import { prisma } from "../prisma.js";
 import {
   createProjectSchema,
   updateProjectSchema,
-} from "../schemas/project.shcema.js";
+} from "../schemas/project.schema.js";
 
 export const getMyProjects = async (req, res) => {
   try {
