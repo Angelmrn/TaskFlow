@@ -1,7 +1,10 @@
 ### Variables
 @baseUrl = http://localhost:1234/api
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTc3MjY3MjM5OCwiZXhwIjoxNzcyNjczMjk4fQ.7OGDEbq7Gs_5KAKRHQH8fBr4PjI6aZ_iOI4z462_imc
-@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTc3MjY3MjM5OCwiZXhwIjoxNzczMjc3MTk4fQ.g8bm2j2OJy1WAVxclwPvxtNVJO2ns-sLUsN631dKMZo
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTc3Mjk5OTIwMCwiZXhwIjoxNzczMDAwMTAwfQ.WLWWxkCaYOgYetFFSnYyvfTB04dwHmm2P8NGZJzJnvw
+@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTc3Mjk5OTIwMCwiZXhwIjoxNzczNjA0MDAwfQ.cutZSEJvIoLx346OB-WTDdXhEcpKym9RdkCz4-tYw1
+
+########################## AUTH ################################
+###POST create new user
 POST http://localhost:1234/api/register
 Content-Type: application/json
 
@@ -16,28 +19,7 @@ POST http://localhost:1234/api/login
 Content-Type: application/json
 
 {
-    "email": "andres@test.com",
-    "password": "123456"
-}
-
-###POST create new user2
-POST http://localhost:1234/api/register
-Content-Type: application/json
-
-{
     "email": "angel@test.com",
-    "username": "Angel",
-    "password": "234567"
-}
-
-
-
-###POST login2
-POST http://localhost:1234/api/login
-Content-Type: application/json
-
-{
-    "email": "sara@test.com",
     "password": "234567"
 }
 
@@ -116,4 +98,32 @@ Authorization: Bearer {{accessToken}}
 
 ###DELETE delete task
 DELETE http://localhost:1234/api/task/delete/3
+Authorization: Bearer {{accessToken}}
+
+######################### MEMBERS ################################
+###GET members by project id
+GET http://localhost:1234/api/project/3/members
+Authorization: Bearer {{accessToken}}
+
+###POST add member to project
+POST http://localhost:1234/api/project/3/member/add
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "userId": 2,
+    "role": "admin"
+}
+
+###PUT update member role
+PUT http://localhost:1234/api/project/3/member/update/2
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "role": "admin"
+}
+
+###DELETE remove member from project
+DELETE http://localhost:1234/api/project/3/member/delete/1
 Authorization: Bearer {{accessToken}}

@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import authRoutes from "./routes/auth.routes.js";
 import projectRoutes from "./routes/project.routes.js";
 import taskRoutes from "./routes/task.routes.js";
+import memberRoutes from "./routes/member.routes.js";
 
 dotenv.config();
 
@@ -15,7 +16,7 @@ app.use(
     credentials: true,
   }),
 );
-
+app.disable("x-powered-by");
 app.use(morgan("dev"));
 app.use(express.json());
 
@@ -26,6 +27,7 @@ app.get("/", (req, res) => {
 app.use("/api", authRoutes);
 app.use("/api", projectRoutes);
 app.use("/api", taskRoutes);
+app.use("/api", memberRoutes);
 
 const PORT = process.env.PORT || 1234;
 
