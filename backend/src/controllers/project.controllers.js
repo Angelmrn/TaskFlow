@@ -128,9 +128,12 @@ export const deleteProject = async (req, res) => {
       return res.status(403).json({ message: "Unauthorized" });
     }
     await prisma.project.delete({
-      where: { id: parseInt(id) },
+      where: {
+        id: parseInt(id),
+        ownerId: userId, //solo el owner puede eliminarlo
+      },
     });
-    res.json({ message: "Project with deleted succesfully" });
+    res.json({ message: "Project deleted succesfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });

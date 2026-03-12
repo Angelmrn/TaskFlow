@@ -1,16 +1,14 @@
 ### Variables
 @baseUrl = http://localhost:1234/api
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTc3Mjk5OTIwMCwiZXhwIjoxNzczMDAwMTAwfQ.WLWWxkCaYOgYetFFSnYyvfTB04dwHmm2P8NGZJzJnvw
-@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTc3Mjk5OTIwMCwiZXhwIjoxNzczNjA0MDAwfQ.cutZSEJvIoLx346OB-WTDdXhEcpKym9RdkCz4-tYw1
-
-########################## AUTH ################################
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc3MzMzODYwMiwiZXhwIjoxNzczMzM5NTAyfQ.GCnJWaiCszsE_hstvVC-idwXDAiUW3vdyzEyreWYm7A
+@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc3MzMzODYwMiwiZXhwIjoxNzczOTQzNDAyfQ.y8wb1VYXH-WNDX1GgUyLolNmyY2JEqm8cKICCcLrM4k
 ###POST create new user
 POST http://localhost:1234/api/register
 Content-Type: application/json
 
 {
-    "email": "andres@test.com",
-    "username": "Andres",
+    "email": "sara@test.com",
+    "username": "Sara",
     "password": "123456"
 }
 
@@ -19,8 +17,8 @@ POST http://localhost:1234/api/login
 Content-Type: application/json
 
 {
-    "email": "angel@test.com",
-    "password": "234567"
+    "email": "andres@test.com",
+    "password": "123456"
 }
 
 ###GET users 
@@ -49,18 +47,19 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-    "name": "Project 3",
-    "description": "This is the third project"
+    "name": "Project 4",
+    "description": "This is the fourth project"
 }
 
 ###PUT update project
-PUT http://localhost:1234/api/project/update/1
+PUT http://localhost:1234/api/project/update/4
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-    "name": "Project 1 Updated",
-    "description": "This is the first project updated"
+    "name": "Project 4 Updated",
+    "description": "This is the fourth project updated",
+    "color": "#FF5733"
 }
 
 ###DELETE delete project
@@ -73,31 +72,30 @@ GET http://localhost:1234/api/project/3/tasks
 Authorization: Bearer {{accessToken}}
 
 ###POST create new task
-POST http://localhost:1234/api/project/2/task/create
+POST http://localhost:1234/api/project/4/task/create
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-    "title": "Task 3",
-    "description": "This is the third task",
-    "status": "in_progress",
-    "assigneeId": 1
+    "title": "Task project 4",
+    "description": "Test task for project 4 no member",
+    "assigneeId": 3
 }
 
 ###PUT update task
-PUT http://localhost:1234/api/task/update/1
+PUT http://localhost:1234/api/project/4/task/update/4
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-    "title": "Task 1 Updated",
-    "description": "This is the first task updated",
+    "title": "Task 4 Updated",
+    "description": "Task project 4 updated no member",
     "status": "in_progress",
     "assigneeId": 2
 }
 
 ###DELETE delete task
-DELETE http://localhost:1234/api/task/delete/3
+DELETE http://localhost:1234/api/project/4/task/delete/4
 Authorization: Bearer {{accessToken}}
 
 ######################### MEMBERS ################################
