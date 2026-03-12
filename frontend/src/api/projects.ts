@@ -1,4 +1,6 @@
-import api from "../api/axios";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
+const getToken = () => localStorage.getItem("accessToken");
 
 export interface Project {
   id: number;
@@ -13,7 +15,7 @@ export interface Project {
     username: string;
   };
   _count?: {
-    tasks: number;
+    task: number;
     members: number;
   };
 }
@@ -25,30 +27,77 @@ export interface CreateProjectData {
 }
 
 export const getMyProjects = async (): Promise<Project[]> => {
-  const { data } = await api.get("/projects");
-  return data;
+  const response = await fetch(`${BASE_URL}/project`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || "Error getting my projects");
+  }
+  return response.json();
 };
 
-export const getProjectById = async (id: number): Promise<Project> => {
-  const { data } = await api.get(`/projects/${id}`);
-  return data;
+export const getProjectById = async (id: number): Promise<Project[]> => {
+  const response = await fetch(`${BASE_URL}/project/${id}`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || "Error getting project");
+  }
+  return response.json();
 };
 
 export const createProject = async (
   project: CreateProjectData,
 ): Promise<Project> => {
-  const { data } = await api.post("/projects", project);
-  return data;
+  const response = await fetch(`${BASE_URL}/project/create`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(project),
+  });
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || "Error creating a project");
+  }
+  return response.json();
 };
 
 export const updateProject = async (
+  project: CreateProjectData,
   id: number,
-  project: Partial<CreateProjectData>,
 ): Promise<Project> => {
-  const { data } = await api.put(`/projects/${id}`, project);
-  return data;
+  const response = await fetch(`${BASE_URL}/project/update/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+    body: JSON.stringify(project),
+  });
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || "Error updating a project");
+  }
+  return response.json();
 };
 
 export const deleteProject = async (id: number): Promise<void> => {
-  await api.delete(`/projects/${id}`);
+  const response = await fetch(`${BASE_URL}/project/delete/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || "Error deleting a project");
+  }
 };

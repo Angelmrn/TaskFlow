@@ -13,10 +13,9 @@ import {
 import Grid from "@mui/material/Grid";
 import { Add, FolderOpen, Assignment, People } from "@mui/icons-material";
 import { useAuth } from "../context/AuthContext";
-import { getMyProjects } from "../api/projects";
-import type { Project } from "../api/projects";
+import { getMyProjects } from "../api/projects.ts";
+import type { Project } from "../api/projects.ts";
 import ProjectCard from "../../src/components/projects/ProjectCard";
-import CreateProjectModal from "../../src/components/projects/CreateProjectModal";
 
 export default function DashboardPage() {
   const { user } = useAuth();
@@ -36,7 +35,7 @@ export default function DashboardPage() {
       const data = await getMyProjects();
       setProjects(data);
     } catch (err: any) {
-      setError(err.response?.data?.message || "Error al cargar proyectos");
+      setError(err.message || "Error al cargar proyectos");
     } finally {
       setLoading(false);
     }
@@ -50,7 +49,6 @@ export default function DashboardPage() {
     totalProjects: projects.length,
     ownedProjects: projects.filter((p) => p.ownerId === user?.id).length,
     memberProjects: projects.filter((p) => p.ownerId !== user?.id).length,
-    totalTasks: projects.reduce((sum, p) => sum + (p._count?.tasks || 0), 0),
   };
 
   if (loading) {
@@ -213,14 +211,6 @@ export default function DashboardPage() {
                 alignItems: "center",
               }}
             >
-              <Box>
-                <Typography variant="h3" sx={{ fontWeight: 700 }}>
-                  {stats.totalTasks}
-                </Typography>
-                <Typography variant="body2" sx={{ opacity: 0.9 }}>
-                  Total Tareas
-                </Typography>
-              </Box>
               <Assignment sx={{ fontSize: 48, opacity: 0.3 }} />
             </Box>
           </CardContent>
@@ -318,11 +308,6 @@ export default function DashboardPage() {
       )}
 
       {/* Modal Crear Proyecto */}
-      <CreateProjectModal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        onSuccess={handleProjectCreated}
-      />
     </Container>
   );
 }

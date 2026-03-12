@@ -18,18 +18,17 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    setError("");
-    setLoading(true);
-
+  const handleSubmit = async () => {
     try {
+      setLoading(true);
       await login(email, password);
       navigate("/");
-    } catch (err: any) {
-      setError(err.response?.data?.message || "Login failed");
-    } finally {
-      setLoading(false);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("Error desconocido");
+      }
     }
   };
   return (
