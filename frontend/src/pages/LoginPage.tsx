@@ -18,9 +18,11 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setError("");
+    setLoading(true);
     try {
-      setLoading(true);
       await login(email, password);
       navigate("/");
     } catch (error) {

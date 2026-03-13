@@ -1,7 +1,7 @@
 ### Variables
 @baseUrl = http://localhost:1234/api
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc3MzMzODYwMiwiZXhwIjoxNzczMzM5NTAyfQ.GCnJWaiCszsE_hstvVC-idwXDAiUW3vdyzEyreWYm7A
-@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTc3MzMzODYwMiwiZXhwIjoxNzczOTQzNDAyfQ.y8wb1VYXH-WNDX1GgUyLolNmyY2JEqm8cKICCcLrM4k
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTc3MzQzMjAwNiwiZXhwIjoxNzczNDMyOTA2fQ.E8JA2tZYdMBO7qTIQBDGJR_buLL1cZ9Bbqdvj9iOylA
+@refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTc3MzQyOTQ5NiwiZXhwIjoxNzc0MDM0Mjk2fQ.OWW4qhcWr30eE9Yhd-b25hN-YPIEUEfqQrSUNfjtKKQ
 ###POST create new user
 POST http://localhost:1234/api/register
 Content-Type: application/json
@@ -17,7 +17,7 @@ POST http://localhost:1234/api/login
 Content-Type: application/json
 
 {
-    "email": "andres@test.com",
+    "email": "sara@test.com",
     "password": "123456"
 }
 
@@ -68,7 +68,7 @@ Authorization: Bearer {{accessToken}}
 
 ######################### TASKS ################################
 ###GET tasks by project id
-GET http://localhost:1234/api/project/3/tasks
+GET http://localhost:1234/api/project/4/tasks
 Authorization: Bearer {{accessToken}}
 
 ###POST create new task

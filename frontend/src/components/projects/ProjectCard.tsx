@@ -82,7 +82,7 @@ export default function ProjectCard({ project, onDelete }: Props) {
         <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
           <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
             <Typography variant="h6" color="primary">
-              {project._count?.tasks || 0}
+              {project._count?.task || 0}
             </Typography>
             <Typography variant="caption" color="text.secondary">
               tareas

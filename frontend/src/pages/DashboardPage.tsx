@@ -16,6 +16,7 @@ import { useAuth } from "../context/AuthContext";
 import { getMyProjects } from "../api/projects.ts";
 import type { Project } from "../api/projects.ts";
 import ProjectCard from "../../src/components/projects/ProjectCard";
+import CreateProjectModal from "../components/projects/CreateProjectModal.tsx";
 
 export default function DashboardPage() {
   const { user } = useAuth();
@@ -33,6 +34,7 @@ export default function DashboardPage() {
       setLoading(true);
       setError("");
       const data = await getMyProjects();
+      console.log("Proyectos: ", data);
       setProjects(data);
     } catch (err: any) {
       setError(err.message || "Error al cargar proyectos");
@@ -90,7 +92,6 @@ export default function DashboardPage() {
               Gestiona tus proyectos y tareas en un solo lugar
             </Typography>
           </Box>
-
           <Button
             variant="contained"
             size="large"
@@ -109,112 +110,115 @@ export default function DashboardPage() {
           </Button>
         </Box>
       </Box>
-      <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-        <Card
-          sx={{
-            background: "linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)",
-            color: "white",
-          }}
-        >
-          <CardContent>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Box>
-                <Typography variant="h3" sx={{ fontWeight: 700 }}>
-                  {stats.totalProjects}
-                </Typography>
-                <Typography variant="body2" sx={{ opacity: 0.9 }}>
-                  Total Proyectos
-                </Typography>
-              </Box>
-              <FolderOpen sx={{ fontSize: 48, opacity: 0.3 }} />
-            </Box>
-          </CardContent>
-        </Card>
-      </Grid>
 
-      <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-        <Card
-          sx={{
-            background: "linear-gradient(135deg, #ec4899 0%, #f472b6 100%)",
-            color: "white",
-          }}
-        >
-          <CardContent>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Box>
-                <Typography variant="h3" sx={{ fontWeight: 700 }}>
-                  {stats.ownedProjects}
-                </Typography>
-                <Typography variant="body2" sx={{ opacity: 0.9 }}>
-                  Creados por mí
-                </Typography>
+      <Grid container spacing={3} sx={{ mb: 4 }}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <Card
+            sx={{
+              background: "linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)",
+              color: "white",
+            }}
+          >
+            <CardContent>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <Box>
+                  <Typography variant="h3" sx={{ fontWeight: 700 }}>
+                    {stats.totalProjects}
+                  </Typography>
+                  <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                    Total Proyectos
+                  </Typography>
+                </Box>
+                <FolderOpen sx={{ fontSize: 48, opacity: 0.3 }} />
               </Box>
-              <People sx={{ fontSize: 48, opacity: 0.3 }} />
-            </Box>
-          </CardContent>
-        </Card>
-      </Grid>
+            </CardContent>
+          </Card>
+        </Grid>
 
-      <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-        <Card
-          sx={{
-            background: "linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%)",
-            color: "white",
-          }}
-        >
-          <CardContent>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Box>
-                <Typography variant="h3" sx={{ fontWeight: 700 }}>
-                  {stats.memberProjects}
-                </Typography>
-                <Typography variant="body2" sx={{ opacity: 0.9 }}>
-                  Como Miembro
-                </Typography>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <Card
+            sx={{
+              background: "linear-gradient(135deg, #ec4899 0%, #f472b6 100%)",
+              color: "white",
+            }}
+          >
+            <CardContent>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <Box>
+                  <Typography variant="h3" sx={{ fontWeight: 700 }}>
+                    {stats.ownedProjects}
+                  </Typography>
+                  <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                    Creados por mí
+                  </Typography>
+                </Box>
+                <People sx={{ fontSize: 48, opacity: 0.3 }} />
               </Box>
-              <People sx={{ fontSize: 48, opacity: 0.3 }} />
-            </Box>
-          </CardContent>
-        </Card>
-      </Grid>
+            </CardContent>
+          </Card>
+        </Grid>
 
-      <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-        <Card
-          sx={{
-            background: "linear-gradient(135deg, #10b981 0%, #34d399 100%)",
-            color: "white",
-          }}
-        >
-          <CardContent>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Assignment sx={{ fontSize: 48, opacity: 0.3 }} />
-            </Box>
-          </CardContent>
-        </Card>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <Card
+            sx={{
+              background: "linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%)",
+              color: "white",
+            }}
+          >
+            <CardContent>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <Box>
+                  <Typography variant="h3" sx={{ fontWeight: 700 }}>
+                    {stats.memberProjects}
+                  </Typography>
+                  <Typography variant="body2" sx={{ opacity: 0.9 }}>
+                    Como Miembro
+                  </Typography>
+                </Box>
+                <People sx={{ fontSize: 48, opacity: 0.3 }} />
+              </Box>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <Card
+            sx={{
+              background: "linear-gradient(135deg, #10b981 0%, #34d399 100%)",
+              color: "white",
+            }}
+          >
+            <CardContent>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <Assignment sx={{ fontSize: 48, opacity: 0.3 }} />
+              </Box>
+            </CardContent>
+          </Card>
+        </Grid>
       </Grid>
 
       {error && (
@@ -234,26 +238,9 @@ export default function DashboardPage() {
             border: "2px dashed",
             borderColor: "divider",
           }}
-        >
-          <FolderOpen sx={{ fontSize: 80, color: "text.secondary", mb: 2 }} />
-          <Typography variant="h5" gutterBottom sx={{ fontWeight: 600 }}>
-            No tienes proyectos aún
-          </Typography>
-          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
-            Crea tu primer proyecto para comenzar a organizar tus tareas
-          </Typography>
-          <Button
-            variant="contained"
-            size="large"
-            startIcon={<Add />}
-            onClick={() => setModalOpen(true)}
-          >
-            Crear Primer Proyecto
-          </Button>
-        </Box>
+        ></Box>
       ) : (
         <>
-          {/* Sección: Mis Proyectos */}
           {stats.ownedProjects > 0 && (
             <Box sx={{ mb: 4 }}>
               <Box
@@ -269,17 +256,18 @@ export default function DashboardPage() {
                 />
               </Box>
 
-              {projects
-                .filter((p) => p.ownerId === user?.id)
-                .map((project) => (
-                  <Grid size={{ xs: 12, sm: 6, md: 3 }} key={project.id}>
-                    <ProjectCard project={project} />
-                  </Grid>
-                ))}
+              <Grid container spacing={3}>
+                {projects
+                  .filter((p) => p.ownerId == user?.id)
+                  .map((project) => (
+                    <Grid size={{ xs: 12, sm: 6, md: 3 }} key={project.id}>
+                      <ProjectCard project={project} />
+                    </Grid>
+                  ))}
+              </Grid>
             </Box>
           )}
 
-          {/* Sección: Proyectos Compartidos */}
           {stats.memberProjects > 0 && (
             <Box>
               <Box
@@ -295,19 +283,24 @@ export default function DashboardPage() {
                 />
               </Box>
 
-              {projects
-                .filter((p) => p.ownerId !== user?.id)
-                .map((project) => (
-                  <Grid size={{ xs: 12, sm: 6, md: 3 }} key={project.id}>
-                    <ProjectCard project={project} />
-                  </Grid>
-                ))}
+              <Grid container spacing={3}>
+                {projects
+                  .filter((p) => p.ownerId != user?.id)
+                  .map((project) => (
+                    <Grid size={{ xs: 12, sm: 6, md: 3 }} key={project.id}>
+                      <ProjectCard project={project} />
+                    </Grid>
+                  ))}
+              </Grid>
             </Box>
           )}
         </>
       )}
-
-      {/* Modal Crear Proyecto */}
+      <CreateProjectModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onSuccess={handleProjectCreated}
+      />
     </Container>
   );
 }
