@@ -25,15 +25,15 @@ export const getTasks = async (req, res) => {
 
 export const createTask = async (req, res) => {
   try {
+    const { userId } = req.user;
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
     const result = createTaskSchema.safeParse(req.body);
     if (!result.success) {
       return res
         .status(400)
         .json({ message: "Validation error", errors: result.error.errors });
-    }
-    const { userId } = req.user;
-    if (!userId) {
-      return res.status(401).json({ message: "Unauthorized" });
     }
     const { projectId } = req.params;
     const task = await prisma.task.create({

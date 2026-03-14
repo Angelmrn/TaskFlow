@@ -17,14 +17,21 @@ import { getMyProjects } from "../api/projects.ts";
 import type { Project } from "../api/projects.ts";
 import ProjectCard from "../../src/components/projects/ProjectCard";
 import CreateProjectModal from "../components/projects/CreateProjectModal.tsx";
-
+import { deleteProject } from "../api/projects.ts";
 export default function DashboardPage() {
   const { user } = useAuth();
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
-
+  const handleDeleteProject = async (id: number) => {
+    try {
+      await deleteProject(id);
+      setProjects((prev) => prev.filter((proj) => proj.id !== id));
+    } catch (err: any) {
+      setError(err.message || "Error al eliminar proyecto");
+    }
+  };
   useEffect(() => {
     loadProjects();
   }, []);
@@ -261,7 +268,10 @@ export default function DashboardPage() {
                   .filter((p) => p.ownerId == user?.id)
                   .map((project) => (
                     <Grid size={{ xs: 12, sm: 6, md: 3 }} key={project.id}>
-                      <ProjectCard project={project} />
+                      <ProjectCard
+                        project={project}
+                        onDelete={handleDeleteProject}
+                      />
                     </Grid>
                   ))}
               </Grid>
@@ -288,7 +298,10 @@ export default function DashboardPage() {
                   .filter((p) => p.ownerId != user?.id)
                   .map((project) => (
                     <Grid size={{ xs: 12, sm: 6, md: 3 }} key={project.id}>
-                      <ProjectCard project={project} />
+                      <ProjectCard
+                        project={project}
+                        onDelete={handleDeleteProject}
+                      />
                     </Grid>
                   ))}
               </Grid>

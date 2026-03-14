@@ -26,12 +26,25 @@ export interface CreateTaskData {
 export const getTaskByProjectId = async (id: number): Promise<Task[]> => {
   const response = await fetch(`${BASE_URL}/project/${id}/tasks`, {
     headers: {
-      Authoeization: `Bearer ${getToken()}`,
+      Authorization: `Bearer ${getToken()}`,
     },
   });
   if (!response.ok) {
     const error = await response.json();
     throw new Error(error.message || "Error getting task");
+  }
+  return response.json();
+};
+
+export const postNewTask = async (id: number): Promise<Task> => {
+  const response = await fetch(`${BASE_URL}/project/${id}/tasks/create`, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || "Error creatig task");
   }
   return response.json();
 };

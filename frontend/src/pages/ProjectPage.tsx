@@ -19,7 +19,7 @@ import {
 import { Edit, Delete, ArrowBack, AddTask } from "@mui/icons-material";
 import { getProjectById, deleteProject, updateProject } from "../api/projects";
 import type { Project } from "../api/projects";
-
+import DeleteDialog from "../components/deleteModal";
 const COLORS = [
   { name: "Morado", value: "#8b5cf6" },
   { name: "Rosa", value: "#ec4899" },
@@ -43,6 +43,7 @@ export default function ProjectPage() {
   const [editName, setEditName] = useState("");
   const [editDescription, setEditDescription] = useState("");
   const [editColor, setEditColor] = useState("");
+  const [addTask, setAddTask] = useState("");
 
   useEffect(() => {
     loadProject();
@@ -75,7 +76,7 @@ export default function ProjectPage() {
     }
   };
 
-  const handleEditSubmit = async (e: React.FormEvent) => {
+  const handleEditSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       await updateProject(
@@ -88,6 +89,8 @@ export default function ProjectPage() {
       setError(err.message || "Error al actualizar");
     }
   };
+
+  const handleAddTask = async (e: React.SubmitEvent<HTMLFormElement>) => {};
 
   if (loading) {
     return (
@@ -193,22 +196,16 @@ export default function ProjectPage() {
         )}
       </Box>
 
-      <Dialog open={deleteModalOpen} onClose={() => setDeleteModalOpen(false)}>
-        <DialogTitle>¿Eliminar proyecto?</DialogTitle>
-        <DialogContent>
-          <Typography>
-            Estás a punto de eliminar el proyecto{" "}
-            <strong>{project.name}</strong>. Esta acción no se puede deshacer y
-            eliminará todas las tareas asociadas.
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setDeleteModalOpen(false)}>Cancelar</Button>
-          <Button color="error" variant="contained" onClick={handleDelete}>
-            Sí, eliminar
-          </Button>
-        </DialogActions>
-      </Dialog>
+      {deleteModalOpen && (
+        <DeleteDialog
+          open={deleteModalOpen}
+          onClose={() => setDeleteModalOpen(false)}
+          onConfirm={handleDelete}
+          title="¿Eliminar Proyecto?"
+          itemName={project.name}
+          description={`Estás a punto de eliminar el proyecto ${project.name}. Esta acción no se puede deshacer y eliminará todas las tareas asociadas.`}
+        />
+      )}
 
       <Dialog
         open={editModalOpen}
