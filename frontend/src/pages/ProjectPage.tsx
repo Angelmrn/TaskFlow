@@ -15,11 +15,16 @@ import {
   TextField,
   Card,
   CardContent,
+  Grid,
 } from "@mui/material";
 import { Edit, Delete, ArrowBack, AddTask } from "@mui/icons-material";
 import { getProjectById, deleteProject, updateProject } from "../api/projects";
 import type { Project } from "../api/projects";
 import DeleteDialog from "../components/deleteModal";
+import { getTaskByProjectId, deleteTask, updateTask } from "../api/task";
+import type { Task } from "../api/task";
+import TaskCard from "../components/tasks/TaskCard";
+import CreateTaskModal from "../components/tasks/CreateTaskModal";
 const COLORS = [
   { name: "Morado", value: "#8b5cf6" },
   { name: "Rosa", value: "#ec4899" },
@@ -43,10 +48,12 @@ export default function ProjectPage() {
   const [editName, setEditName] = useState("");
   const [editDescription, setEditDescription] = useState("");
   const [editColor, setEditColor] = useState("");
-  const [addTask, setAddTask] = useState("");
+  const [tasks, setTask] = useState<Task[]>([]);
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     loadProject();
+    loadTasks();
   }, [projectId]);
 
   const loadProject = async () => {
@@ -65,14 +72,31 @@ export default function ProjectPage() {
       setLoading(false);
     }
   };
+  const loadTasks = async () => {
+    try {
+      const data = await getTaskByProjectId(Number(projectId));
+      setTask(data);
+    } catch (err: any) {
+      setError(err.message || "Error Loading Tasks");
+    }
+  };
 
-  const handleDelete = async () => {
+  const handleDeleteProject = async () => {
     try {
       await deleteProject(Number(projectId));
       navigate("/");
     } catch (err: any) {
       setError(err.message || "Error al eliminar el proyecto");
       setDeleteModalOpen(false);
+    }
+  };
+
+  const handleDeleteTask = async (taskId: number) => {
+    try {
+      await deleteTask(Number(projectId), taskId);
+      setTask((prev) => prev.filter((t) => t.id !== taskId));
+    } catch (err: any) {
+      setError(err.message || "Error deleting task");
     }
   };
 
@@ -90,7 +114,19 @@ export default function ProjectPage() {
     }
   };
 
-  const handleAddTask = async (e: React.SubmitEvent<HTMLFormElement>) => {};
+  const handleEditTask = async (
+    taskId: number,
+    data: { title: string; description: string },
+  ) => {
+    try {
+      await updateTask(data, Number(projectId), taskId);
+      setTask((prev) =>
+        prev.map((t) => (t.id === taskId ? { ...t, ...data } : t)),
+      );
+    } catch (err: any) {
+      setError(err.message || "Error al editar tarea");
+    }
+  };
 
   if (loading) {
     return (
@@ -169,7 +205,11 @@ export default function ProjectPage() {
           <Typography variant="h5" sx={{ fontWeight: 600 }}>
             Tareas
           </Typography>
-          <Button variant="contained" startIcon={<AddTask />}>
+          <Button
+            variant="contained"
+            onClick={() => setModalOpen(true)}
+            startIcon={<AddTask />}
+          >
             Nueva Tarea
           </Button>
         </Box>
@@ -192,7 +232,17 @@ export default function ProjectPage() {
             </CardContent>
           </Card>
         ) : (
-          <Typography>Aquí irá la lista de tareas (Próximamente...)</Typography>
+          <Grid container spacing={2}>
+            {tasks.map((task) => (
+              <Grid size={{ xs: 12, sm: 6, md: 4 }} key={task.id}>
+                <TaskCard
+                  task={task}
+                  onEdit={handleEditTask}
+                  onDelete={handleDeleteTask}
+                />
+              </Grid>
+            ))}
+          </Grid>
         )}
       </Box>
 
@@ -200,7 +250,7 @@ export default function ProjectPage() {
         <DeleteDialog
           open={deleteModalOpen}
           onClose={() => setDeleteModalOpen(false)}
-          onConfirm={handleDelete}
+          onConfirm={handleDeleteProject}
           title="¿Eliminar Proyecto?"
           itemName={project.name}
           description={`Estás a punto de eliminar el proyecto ${project.name}. Esta acción no se puede deshacer y eliminará todas las tareas asociadas.`}
@@ -263,6 +313,12 @@ export default function ProjectPage() {
           </DialogActions>
         </form>
       </Dialog>
+      <CreateTaskModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onSuccess={loadTasks}
+        projectId={Number(projectId)}
+      />
     </Container>
   );
 }

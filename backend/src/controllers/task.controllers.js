@@ -3,10 +3,6 @@ import { createTaskSchema, updateTaskSchema } from "../schemas/task.schema.js";
 
 export const getTasks = async (req, res) => {
   try {
-    const { userId } = req.user;
-    if (!userId) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
     const { projectId } = req.params;
     const tasks = await prisma.task.findMany({
       where: { projectId: parseInt(projectId) },
@@ -25,10 +21,6 @@ export const getTasks = async (req, res) => {
 
 export const createTask = async (req, res) => {
   try {
-    const { userId } = req.user;
-    if (!userId) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
     const result = createTaskSchema.safeParse(req.body);
     if (!result.success) {
       return res

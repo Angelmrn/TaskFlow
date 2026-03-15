@@ -1,6 +1,6 @@
 ### Variables
 @baseUrl = http://localhost:1234/api
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTc3MzQzMjAwNiwiZXhwIjoxNzczNDMyOTA2fQ.E8JA2tZYdMBO7qTIQBDGJR_buLL1cZ9Bbqdvj9iOylA
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTc3MzU5ODM3MSwiZXhwIjoxNzczNTk5MjcxfQ.2geeB9NjDDi7-6I0FV-pZrVa7SgZI_awtw5iRlzO5nM
 @refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTc3MzQyOTQ5NiwiZXhwIjoxNzc0MDM0Mjk2fQ.OWW4qhcWr30eE9Yhd-b25hN-YPIEUEfqQrSUNfjtKKQ
 ###POST create new user
 POST http://localhost:1234/api/register
@@ -72,14 +72,14 @@ GET http://localhost:1234/api/project/4/tasks
 Authorization: Bearer {{accessToken}}
 
 ###POST create new task
-POST http://localhost:1234/api/project/4/task/create
+POST http://localhost:1234/api/project/6/task/create
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-    "title": "Task project 4",
-    "description": "Test task for project 4 no member",
-    "assigneeId": 3
+    "title": "Implement Schema",
+    "description": "Create the schema for users",
+    "assigneeId": 1
 }
 
 ###PUT update task

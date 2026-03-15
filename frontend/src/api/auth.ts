@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:1234/api/";
+const BASE_URL = "http://localhost:1234/api";
 interface User {
   id: number;
   username: string;
@@ -35,7 +35,7 @@ export const login = async (
   email: string,
   password: string,
 ): Promise<AuthResponse> => {
-  const response = await fetch(`${BASE_URL}login`, {
+  const response = await fetch(`${BASE_URL}/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
