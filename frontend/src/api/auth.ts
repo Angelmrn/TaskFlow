@@ -1,5 +1,7 @@
 const BASE_URL = "http://localhost:1234/api";
-interface User {
+const getToken = () => localStorage.getItem("accessToken");
+
+export interface User {
   id: number;
   username: string;
   email: string;
@@ -50,20 +52,30 @@ export const login = async (
   return response.json();
 };
 
-export const logout = async (): Promise<void> => {
-  const token = localStorage.getItem("accessToken");
-};
+export const logout = async (): Promise<void> => {};
 
 export const getMe = async (): Promise<User> => {
-  const token = localStorage.getItem("accessToken");
   const response = await fetch(`${BASE_URL}/me`, {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${getToken()}`,
     },
   });
   if (!response.ok) {
     throw new Error("Failed to fethc user");
+  }
+  return response.json();
+};
+
+export const getUsers = async (): Promise<User[]> => {
+  const response = await fetch(`${BASE_URL}/users`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+  if (!response.ok) {
+    throw new Error("Failed to fethc users");
   }
   return response.json();
 };

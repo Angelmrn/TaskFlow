@@ -11,6 +11,7 @@ export interface Task {
   asigneeId: number;
   createdAt: string;
   updatedAt: string;
+  assigneeId?: number;
   assignee?: {
     id: number;
     username: string;

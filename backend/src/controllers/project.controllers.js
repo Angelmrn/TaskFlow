@@ -72,6 +72,13 @@ export const createProject = async (req, res) => {
         ownerId: userId,
       },
     });
+    await prisma.projectMember.create({
+      data: {
+        projectId: project.id,
+        userId,
+        role: "admin",
+      },
+    });
     res.status(201).json({
       message: "Project create successfully",
       project,

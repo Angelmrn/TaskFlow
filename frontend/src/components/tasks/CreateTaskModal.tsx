@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { postNewTask } from "../../api/task";
+import { getProjectMembers, type Member } from "../../api/members";
 
 interface Props {
   open: boolean;
@@ -33,8 +34,8 @@ export default function CreateTaskModal({
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("pending");
-  const [assigneeId, setAssigneeId] = useState<number | "">("");
-
+  const [assigneeId, setAssigneeId] = useState<string>("");
+  const [member, setMember] = useState<Member[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -80,6 +81,12 @@ export default function CreateTaskModal({
       onClose();
     }
   };
+
+  useEffect(() => {
+    if (open) {
+      getProjectMembers(projectId).then(setMember).catch(console.error);
+    }
+  }, [open, projectId]);
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
@@ -132,19 +139,22 @@ export default function CreateTaskModal({
             </Select>
           </FormControl>
 
-          <TextField
-            fullWidth
-            label="Id del asignado"
-            value={assigneeId}
-            onChange={(e) =>
-              setAssigneeId(e.target.value === "" ? "" : Number(e.target.value))
-            }
-            margin="normal"
-            type="number"
-            slotProps={{
-              htmlInput: { min: 1 },
-            }}
-          />
+          <FormControl fullWidth margin="normal">
+            <InputLabel>Asignado a</InputLabel>
+            <Select
+              value={assigneeId}
+              label="Asignado a"
+              onChange={(e) => setAssigneeId(e.target.value)}
+            >
+              <MenuItem value="">Sin asignar</MenuItem>
+              {member.map((member) => (
+                <MenuItem key={member.userId} value={String(member.userId)}>
+                  {" "}
+                  {member.user.username}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
           <Box
             sx={{

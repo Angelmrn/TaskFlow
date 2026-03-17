@@ -5,6 +5,7 @@ import {
   logout,
   refreshToken,
   getMe,
+  getAllUsers,
 } from "../controllers/auth.controllers.js";
 import { authenticate } from "../middlewares/auth.middleware.js";
 
@@ -15,6 +16,7 @@ router.post("/login", login);
 router.post("/refresh", refreshToken);
 //Protected routes
 router.post("/logout", authenticate, logout);
+router.get("/users", authenticate, getAllUsers);
 router.get("/me", authenticate, getMe);
 
 export default router;

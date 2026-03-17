@@ -1,6 +1,6 @@
 ### Variables
 @baseUrl = http://localhost:1234/api
-@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTc3MzU5ODM3MSwiZXhwIjoxNzczNTk5MjcxfQ.2geeB9NjDDi7-6I0FV-pZrVa7SgZI_awtw5iRlzO5nM
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTc3Mzc3Mzk0MCwiZXhwIjoxNzczNzc0ODQwfQ.FQb23-jeT52skEx3iySw8IpjmXH1H_ILSuaWzb4Ep_o
 @refreshToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTc3MzQyOTQ5NiwiZXhwIjoxNzc0MDM0Mjk2fQ.OWW4qhcWr30eE9Yhd-b25hN-YPIEUEfqQrSUNfjtKKQ
 ###POST create new user
 POST http://localhost:1234/api/register
@@ -25,6 +25,9 @@ Content-Type: application/json
 GET http://localhost:1234/api/me
 Authorization: Bearer {{accessToken}}
 
+### GET allusers
+GET http://localhost:1234/api/users
+Authorization: Bearer {{accessToken}}
 ###POST refresh token
 POST http://localhost:1234/api/refresh
 Content-Type: application/json

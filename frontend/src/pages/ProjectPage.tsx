@@ -17,7 +17,13 @@ import {
   CardContent,
   Grid,
 } from "@mui/material";
-import { Edit, Delete, ArrowBack, AddTask } from "@mui/icons-material";
+import {
+  Edit,
+  Delete,
+  ArrowBack,
+  AddTask,
+  PersonAdd,
+} from "@mui/icons-material";
 import { getProjectById, deleteProject, updateProject } from "../api/projects";
 import type { Project } from "../api/projects";
 import DeleteDialog from "../components/deleteModal";
@@ -25,6 +31,8 @@ import { getTaskByProjectId, deleteTask, updateTask } from "../api/task";
 import type { Task } from "../api/task";
 import TaskCard from "../components/tasks/TaskCard";
 import CreateTaskModal from "../components/tasks/CreateTaskModal";
+import AddMemberModal from "../components/members/addMemberModal";
+
 const COLORS = [
   { name: "Morado", value: "#8b5cf6" },
   { name: "Rosa", value: "#ec4899" },
@@ -50,6 +58,7 @@ export default function ProjectPage() {
   const [editColor, setEditColor] = useState("");
   const [tasks, setTask] = useState<Task[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
+  const [addMemberModalOpen, setAddMemberModalOpen] = useState(false);
 
   useEffect(() => {
     loadProject();
@@ -116,7 +125,12 @@ export default function ProjectPage() {
 
   const handleEditTask = async (
     taskId: number,
-    data: { title: string; description: string },
+    data: {
+      title: string;
+      description: string;
+      status: string;
+      assigneeId?: number;
+    },
   ) => {
     try {
       await updateTask(data, Number(projectId), taskId);
@@ -184,6 +198,13 @@ export default function ProjectPage() {
         <Box sx={{ display: "flex", gap: 1 }}>
           <Button
             variant="outlined"
+            startIcon={<PersonAdd />}
+            onClick={() => setAddMemberModalOpen(true)}
+          >
+            Agregar Miembro
+          </Button>
+          <Button
+            variant="outlined"
             startIcon={<Edit />}
             onClick={() => setEditModalOpen(true)}
           >
@@ -237,6 +258,7 @@ export default function ProjectPage() {
               <Grid size={{ xs: 12, sm: 6, md: 4 }} key={task.id}>
                 <TaskCard
                   task={task}
+                  projectId={Number(projectId)}
                   onEdit={handleEditTask}
                   onDelete={handleDeleteTask}
                 />
@@ -317,6 +339,12 @@ export default function ProjectPage() {
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         onSuccess={loadTasks}
+        projectId={Number(projectId)}
+      />
+      <AddMemberModal
+        open={addMemberModalOpen}
+        onClose={() => setAddMemberModalOpen(false)}
+        onSuccess={() => setAddMemberModalOpen(false)}
         projectId={Number(projectId)}
       />
     </Container>

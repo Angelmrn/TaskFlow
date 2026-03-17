@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -12,21 +12,40 @@ import {
   DialogActions,
   TextField,
   Button,
+  Select,
+  FormControl,
+  InputLabel,
+  MenuItem,
 } from "@mui/material";
 
 import { Delete, Edit } from "@mui/icons-material";
 import type { Task } from "../../api/task";
 import DeleteDialog from "../deleteModal";
+import { getProjectMembers, type Member } from "../../api/members";
 
 interface Props {
   task: Task;
+  projectId: number;
   onDelete?: (id: number) => void;
-  onEdit?: (id: number, data: { title: string; description: string }) => void;
+  onEdit?: (
+    id: number,
+    data: {
+      title: string;
+      description: string;
+      status: string;
+      assigneeId?: number;
+    },
+  ) => void;
 }
 
-export default function TaskCard({ task, onDelete, onEdit }: Props) {
+export default function TaskCard({ task, projectId, onDelete, onEdit }: Props) {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
+  const [status, setStatus] = useState(task.status || "pending");
+  const [members, setMembers] = useState<Member[]>([]);
+  const [assigneeId, setAssigneeId] = useState<string>(
+    task.assigneeId ? String(task.assigneeId) : "",
+  );
   const [editTitle, setEditTitle] = useState(task.title);
   const [editDescription, setEditDescription] = useState(
     task.description || "",
@@ -39,11 +58,21 @@ export default function TaskCard({ task, onDelete, onEdit }: Props) {
     onDelete?.(task.id);
     setDeleteModalOpen(false);
   };
-  const handleEditSubmit = async (e: React.FormEvent) => {
+  const handleEditSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onEdit?.(task.id, { title: editTitle, description: editDescription });
+    onEdit?.(task.id, {
+      title: editTitle,
+      description: editDescription,
+      status,
+      assigneeId: assigneeId !== "" ? Number(assigneeId) : undefined,
+    });
     setEditModalOpen(false);
   };
+  useEffect(() => {
+    if (editModalOpen) {
+      getProjectMembers(projectId).then(setMembers).catch(console.error);
+    }
+  }, [editModalOpen, projectId]);
 
   return (
     <>
@@ -145,6 +174,34 @@ export default function TaskCard({ task, onDelete, onEdit }: Props) {
               value={editDescription}
               onChange={(e) => setEditDescription(e.target.value)}
             />
+            <FormControl fullWidth margin="normal">
+              <InputLabel>Status</InputLabel>
+              <Select
+                value={status}
+                label="Status"
+                onChange={(e) => setStatus(e.target.value)}
+              >
+                <MenuItem value="pending">Pendiente</MenuItem>
+                <MenuItem value="in_progress">En progreso</MenuItem>
+                <MenuItem value="completed">Completado</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl fullWidth margin="normal">
+              <InputLabel>Asignado a</InputLabel>
+              <Select
+                value={assigneeId}
+                label="Asignado a"
+                onChange={(e) => setAssigneeId(e.target.value)}
+              >
+                <MenuItem value="">Sin asignar</MenuItem>
+                {members.map((member) => (
+                  <MenuItem key={member.userId} value={String(member.userId)}>
+                    {" "}
+                    {member.user.username}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setEditModalOpen(false)}>Cancelar</Button>
