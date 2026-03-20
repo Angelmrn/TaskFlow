@@ -24,17 +24,18 @@ export default function Navbar() {
       position="sticky"
       elevation={0}
       sx={{
-        bgcolor: "rgba(255,255,255,0.8)",
+        bgcolor: "rgba(15,15,15,0.8)",
         backdropFilter: "blur(10px)",
-        borderBottom: "1px solid",
-        borderColor: "divider",
-        color: "text.primary",
+        borderBottom: "1px solid rgba(255,255,255,0.08)",
       }}
     >
       <Toolbar sx={{ justifyContent: "space-between" }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <TaskAlt sx={{ color: "#8b5cf6" }} />
-          <Typography variant="h6" sx={{ fontWeight: 700, color: "#8b5cf6" }}>
+          <TaskAlt sx={{ color: "primary.main" }} />
+          <Typography
+            variant="h6"
+            sx={{ fontWeight: 700, color: "primary.main" }}
+          >
             TaskFlow
           </Typography>
         </Box>
@@ -42,10 +43,11 @@ export default function Navbar() {
         <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
           <Avatar
             sx={{
-              bgcolor: "#8b5cf6",
+              bgcolor: "primary.dark",
               width: 32,
               height: 32,
               fontSize: "0.875rem",
+              color: "text.primary",
             }}
           >
             {user?.username?.charAt(0).toUpperCase()}
@@ -53,7 +55,7 @@ export default function Navbar() {
           <IconButton
             size="small"
             onClick={handleLogout}
-            sx={{ color: "black" }}
+            sx={{ color: "error.main" }}
           >
             <Logout />
           </IconButton>

@@ -51,7 +51,8 @@ export default function ProjectCard({ project, onDelete }: Props) {
           cursor: "pointer",
           transition: "all 0.3s ease",
           position: "relative",
-          borderLeft: `4px solid ${project.color || "#8b5cf6"}`,
+          background: "background.paper",
+          borderTop: `4px solid ${project.color || "#8b5cf6"}`,
           "&:hover": {
             transform: "translateY(-4px)",
             boxShadow: 6,
@@ -67,10 +68,21 @@ export default function ProjectCard({ project, onDelete }: Props) {
             display: "flex",
             alignItems: "center",
             gap: 1,
+            overflow: "hidden",
           }}
         >
-          <FolderOpen />
-          <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 600 }}>
+          <FolderOpen sx={{ flexShrink: 0 }} />
+          <Typography
+            variant="h6"
+            sx={{
+              flexGrow: 1,
+              fontWeight: 600,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              minWidth: 0,
+            }}
+          >
             {project.name}
           </Typography>
           <IconButton

@@ -1,9 +1,5 @@
 import { apiFetch } from "./fetch";
 
-const BASE_URL = "http://localhost:1234/api";
-
-const getToken = () => localStorage.getItem("accessToken");
-
 export interface Task {
   id: number;
   title: string;

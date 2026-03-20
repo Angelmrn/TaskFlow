@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { createProject } from "../../api/projects";
+import { createProjectSchema } from "../../schemas/project.schema";
 
 interface Props {
   open: boolean;
@@ -20,13 +21,9 @@ interface Props {
 }
 
 const COLORS = [
-  { name: "Morado", value: "#8b5cf6" },
-  { name: "Rosa", value: "#ec4899" },
-  { name: "Azul", value: "#3b82f6" },
-  { name: "Verde", value: "#10b981" },
-  { name: "Naranja", value: "#f97316" },
-  { name: "Rojo", value: "#ef4444" },
-  { name: "Amarillo", value: "#eab308" },
+  { name: "Naranja", value: "#d3864f" },
+  { name: "Rojo", value: "#ce5959" },
+  { name: "Amarillo", value: "#dfba4e" },
   { name: "Cyan", value: "#06b6d4" },
 ];
 
@@ -44,15 +41,17 @@ export default function CreateProjectModal({
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
+    const result = createProjectSchema.safeParse({ name, description, color });
+    if (!result.success) {
+      setError(result.error.issues[0].message);
+      return;
+    }
     setLoading(true);
-
     try {
       await createProject({ name, description, color });
-
       setName("");
       setDescription("");
       setColor(COLORS[0].value);
-
       onSuccess();
       onClose();
     } catch (err: any) {
@@ -150,7 +149,16 @@ export default function CreateProjectModal({
               color: "white",
             }}
           >
-            <Typography variant="h6" sx={{ fontWeight: 600 }}>
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: 600,
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                minWidth: 0,
+              }}
+            >
               {name || "Nombre del proyecto"}
             </Typography>
             <Typography variant="body2" sx={{ mt: 1, opacity: 0.9 }}>

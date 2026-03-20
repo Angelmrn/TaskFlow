@@ -155,29 +155,6 @@ export default function CreateTaskModal({
               ))}
             </Select>
           </FormControl>
-
-          <Box
-            sx={{
-              mt: 3,
-              p: 2,
-              borderRadius: 2,
-              background: "orange",
-              color: "white",
-            }}
-          >
-            <Typography variant="h6" sx={{ fontWeight: 600 }}>
-              {title || "Nombre de la tarea"}
-            </Typography>
-            <Typography variant="body2" sx={{ mt: 1, opacity: 0.9 }}>
-              {description || "Descripción de la tarea"}
-            </Typography>
-            <Typography variant="body2" sx={{ mt: 1, opacity: 0.9 }}>
-              {status || "Estado de la tarea"}
-            </Typography>
-            <Typography variant="body2" sx={{ mt: 1, opacity: 0.9 }}>
-              {assigneeId || "id Asignado"}
-            </Typography>
-          </Box>
         </DialogContent>
 
         <DialogActions sx={{ px: 3, pb: 3 }}>

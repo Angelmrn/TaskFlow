@@ -1,5 +1,3 @@
-const BASE_URL = "http://localhost:1234/api";
-const getToken = () => localStorage.getItem("accessToken");
 import { apiFetch } from "./fetch";
 
 export interface Member {

@@ -225,7 +225,7 @@ export default function ProjectPage() {
             Tareas
           </Typography>
           <Button
-            variant="contained"
+            variant="outlined"
             onClick={() => setModalOpen(true)}
             startIcon={<AddTask />}
           >
@@ -245,7 +245,11 @@ export default function ProjectPage() {
               <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
                 Crea la primera tarea para empezar a trabajar.
               </Typography>
-              <Button variant="outlined" startIcon={<AddTask />}>
+              <Button
+                variant="outlined"
+                onClick={() => setModalOpen(true)}
+                startIcon={<AddTask />}
+              >
                 Agregar Tarea
               </Button>
             </CardContent>

@@ -11,7 +11,7 @@ import {
   Chip,
 } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import { Add, FolderOpen, Assignment, People } from "@mui/icons-material";
+import { Add, FolderOpen, People } from "@mui/icons-material";
 import { useAuth } from "../context/AuthContext";
 import { getMyProjects, getMemberProjects } from "../api/projects.ts";
 import type { Project } from "../api/projects.ts";
@@ -102,17 +102,13 @@ export default function DashboardPage() {
             </Typography>
           </Box>
           <Button
-            variant="contained"
+            variant="outlined"
             size="large"
             startIcon={<Add />}
             onClick={() => setModalOpen(true)}
             sx={{
               borderRadius: 2,
               px: 3,
-              background: "linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%)",
-              "&:hover": {
-                background: "linear-gradient(135deg, #7c3aed 0%, #db2777 100%)",
-              },
             }}
           >
             Nuevo Proyecto
@@ -124,7 +120,7 @@ export default function DashboardPage() {
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <Card
             sx={{
-              background: "linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)",
+              background: "background.paper",
               color: "white",
             }}
           >
@@ -153,7 +149,7 @@ export default function DashboardPage() {
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <Card
             sx={{
-              background: "linear-gradient(135deg, #ec4899 0%, #f472b6 100%)",
+              background: "background.paper",
               color: "white",
             }}
           >
@@ -182,7 +178,7 @@ export default function DashboardPage() {
         <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <Card
             sx={{
-              background: "linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%)",
+              background: "background.paper",
               color: "white",
             }}
           >
@@ -269,7 +265,7 @@ export default function DashboardPage() {
                 </Typography>
                 <Chip
                   label={stats.memberProjects}
-                  color="secondary"
+                  color="primary"
                   size="small"
                 />
               </Box>

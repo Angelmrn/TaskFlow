@@ -84,7 +84,21 @@ export default function LoginPage() {
             {loading ? "Loading..." : "Login"}
           </Button>
 
-          <Typography variant="body2" align="center">
+          <Typography
+            variant="body2"
+            align="center"
+            sx={{
+              color: "text.secondary",
+              "& a": {
+                color: "primary.light",
+                textDecoration: "none",
+                fontWeight: "bold",
+                "&:hover": {
+                  textDecoration: "underline",
+                },
+              },
+            }}
+          >
             Don't have an account? <Link to="/register">Register</Link>
           </Typography>
         </Box>

@@ -48,21 +48,21 @@ const statusConfig: Record<
     color: "#633806",
     bg: "#FAEEDA",
     dot: "#BA7517",
-    accent: "#EF9F27",
+    accent: "#d47651",
   },
   in_progress: {
     label: "En progreso",
     color: "#0C447C",
     bg: "#E6F1FB",
     dot: "#185FA5",
-    accent: "#378ADD",
+    accent: "#376ca1",
   },
   completed: {
     label: "Completado",
     color: "#27500A",
     bg: "#EAF3DE",
     dot: "#3B6D11",
-    accent: "#639922",
+    accent: "#6f9145",
   },
 };
 
@@ -126,16 +126,13 @@ export default function TaskCard({ task, projectId, onDelete, onEdit }: Props) {
           },
         }}
       >
-        {/* Barra de color según status */}
         <Box sx={{ height: "4px", backgroundColor: currentStatus.accent }} />
 
-        {/* Header */}
         <Box sx={{ px: 2, pt: 1.5, pb: 1 }}>
           <Typography variant="subtitle1" fontWeight={500} sx={{ mb: 0.75 }}>
             {task.title}
           </Typography>
 
-          {/* Badge de status */}
           <Box
             sx={{
               display: "inline-flex",
@@ -165,7 +162,6 @@ export default function TaskCard({ task, projectId, onDelete, onEdit }: Props) {
           </Box>
         </Box>
 
-        {/* Descripción */}
         <CardContent sx={{ pt: 1, pb: 1, flexGrow: 1 }}>
           <Typography
             variant="body2"
@@ -185,7 +181,6 @@ export default function TaskCard({ task, projectId, onDelete, onEdit }: Props) {
 
         <Divider />
 
-        {/* Footer — asignado + fecha */}
         <Box
           sx={{
             px: 2,
@@ -203,8 +198,8 @@ export default function TaskCard({ task, projectId, onDelete, onEdit }: Props) {
                   height: 24,
                   fontSize: "10px",
                   fontWeight: 500,
-                  backgroundColor: "#E6F1FB",
-                  color: "#0C447C",
+                  backgroundColor: "primary.dark",
+                  color: "text.primary",
                 }}
               >
                 {getInitials(task.assignee.username)}
@@ -224,7 +219,6 @@ export default function TaskCard({ task, projectId, onDelete, onEdit }: Props) {
           </Typography>
         </Box>
 
-        {/* Acciones */}
         <CardActions sx={{ justifyContent: "flex-end", pt: 0, px: 1, pb: 1 }}>
           <IconButton size="small" onClick={() => setEditModalOpen(true)}>
             <Edit fontSize="small" color="primary" />
@@ -235,7 +229,6 @@ export default function TaskCard({ task, projectId, onDelete, onEdit }: Props) {
         </CardActions>
       </Card>
 
-      {/* Modal eliminar */}
       <DeleteDialog
         open={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
@@ -245,7 +238,6 @@ export default function TaskCard({ task, projectId, onDelete, onEdit }: Props) {
         description={`Estás a punto de eliminar "${task.title}". Esta acción no se puede deshacer.`}
       />
 
-      {/* Modal editar */}
       <Dialog
         open={editModalOpen}
         onClose={() => setEditModalOpen(false)}
