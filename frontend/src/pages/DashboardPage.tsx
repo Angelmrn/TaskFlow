@@ -13,7 +13,7 @@ import {
 import Grid from "@mui/material/Grid";
 import { Add, FolderOpen, Assignment, People } from "@mui/icons-material";
 import { useAuth } from "../context/AuthContext";
-import { getMyProjects } from "../api/projects.ts";
+import { getMyProjects, getMemberProjects } from "../api/projects.ts";
 import type { Project } from "../api/projects.ts";
 import ProjectCard from "../../src/components/projects/ProjectCard";
 import CreateProjectModal from "../components/projects/CreateProjectModal.tsx";
@@ -40,9 +40,11 @@ export default function DashboardPage() {
     try {
       setLoading(true);
       setError("");
-      const data = await getMyProjects();
-      console.log("Proyectos: ", data);
-      setProjects(data);
+      const [owned, member] = await Promise.all([
+        getMyProjects(),
+        getMemberProjects(),
+      ]);
+      setProjects([...owned, ...member]);
     } catch (err: any) {
       setError(err.message || "Error al cargar proyectos");
     } finally {
@@ -93,7 +95,7 @@ export default function DashboardPage() {
         >
           <Box>
             <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
-              ¡Bienvenido, {user?.username}!
+              ¡Hola de nuevo, {user?.username}!
             </Typography>
             <Typography variant="body1" color="text.secondary">
               Gestiona tus proyectos y tareas en un solo lugar
@@ -201,27 +203,6 @@ export default function DashboardPage() {
                   </Typography>
                 </Box>
                 <People sx={{ fontSize: 48, opacity: 0.3 }} />
-              </Box>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-          <Card
-            sx={{
-              background: "linear-gradient(135deg, #10b981 0%, #34d399 100%)",
-              color: "white",
-            }}
-          >
-            <CardContent>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <Assignment sx={{ fontSize: 48, opacity: 0.3 }} />
               </Box>
             </CardContent>
           </Card>

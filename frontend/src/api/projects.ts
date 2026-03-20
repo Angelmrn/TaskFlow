@@ -1,6 +1,4 @@
-const BASE_URL = "http://localhost:1234/api";
-
-const getToken = () => localStorage.getItem("accessToken");
+import { apiFetch } from "./fetch";
 
 export interface Project {
   id: number;
@@ -27,77 +25,38 @@ export interface CreateProjectData {
 }
 
 export const getMyProjects = async (): Promise<Project[]> => {
-  const response = await fetch(`${BASE_URL}/project`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`,
-    },
-  });
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.message || "Error getting my projects");
-  }
-  return response.json();
+  return apiFetch(`/project`);
 };
 
 export const getProjectById = async (id: number): Promise<Project[]> => {
-  const response = await fetch(`${BASE_URL}/project/${id}`, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`,
-    },
-  });
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.message || "Error getting project");
-  }
-  return response.json();
+  return apiFetch(`/project/${id}`);
+};
+
+export const getMemberProjects = async (): Promise<Project[]> => {
+  return apiFetch("/project/member");
 };
 
 export const createProject = async (
   project: CreateProjectData,
 ): Promise<Project> => {
-  const response = await fetch(`${BASE_URL}/project/create`, {
+  return apiFetch(`/project/create`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${getToken()}`,
-    },
     body: JSON.stringify(project),
   });
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.message || "Error creating a project");
-  }
-  return response.json();
 };
 
 export const updateProject = async (
   project: CreateProjectData,
   id: number,
 ): Promise<Project> => {
-  const response = await fetch(`${BASE_URL}/project/update/${id}`, {
+  return apiFetch(`/project/update/${id}`, {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${getToken()}`,
-    },
     body: JSON.stringify(project),
   });
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.message || "Error updating a project");
-  }
-  return response.json();
 };
 
 export const deleteProject = async (id: number): Promise<void> => {
-  const response = await fetch(`${BASE_URL}/project/delete/${id}`, {
+  return apiFetch(`/project/delete/${id}`, {
     method: "DELETE",
-    headers: {
-      Authorization: `Bearer ${getToken()}`,
-    },
   });
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.message || "Error deleting a project");
-  }
 };

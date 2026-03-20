@@ -134,9 +134,7 @@ export default function ProjectPage() {
   ) => {
     try {
       await updateTask(data, Number(projectId), taskId);
-      setTask((prev) =>
-        prev.map((t) => (t.id === taskId ? { ...t, ...data } : t)),
-      );
+      await loadTasks();
     } catch (err: any) {
       setError(err.message || "Error al editar tarea");
     }
@@ -338,7 +336,10 @@ export default function ProjectPage() {
       <CreateTaskModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
-        onSuccess={loadTasks}
+        onSuccess={async () => {
+          await loadTasks();
+          await loadProject();
+        }}
         projectId={Number(projectId)}
       />
       <AddMemberModal

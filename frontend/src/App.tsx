@@ -5,6 +5,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import DashboardPage from "./pages/DashboardPage";
 import ProjectPage from "./pages/ProjectPage";
+import Layout from "./components/layout/Layout";
 
 export default function App() {
   return (
@@ -17,7 +18,9 @@ export default function App() {
             path="/"
             element={
               <ProtectedRoute>
-                <DashboardPage />
+                <Layout>
+                  <DashboardPage />
+                </Layout>
               </ProtectedRoute>
             }
           />
@@ -25,7 +28,9 @@ export default function App() {
             path="/projects/:projectId"
             element={
               <ProtectedRoute>
-                <ProjectPage />
+                <Layout>
+                  <ProjectPage />
+                </Layout>
               </ProtectedRoute>
             }
           />

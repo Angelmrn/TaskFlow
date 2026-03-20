@@ -146,3 +146,31 @@ export const deleteProject = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const getMemberProjects = async (req, res) => {
+  try {
+    const { userId } = req.user;
+    const projects = await prisma.project.findMany({
+      where: {
+        members: {
+          some: {
+            userId,
+          },
+        },
+        ownerId: { not: userId },
+      },
+      include: {
+        owner: {
+          select: { id: true, username: true },
+        },
+        _count: {
+          select: { task: true, members: true },
+        },
+      },
+    });
+    res.json(projects);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};

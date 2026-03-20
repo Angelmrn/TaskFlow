@@ -192,7 +192,7 @@ export const getMe = async (req, res) => {
         message: "user not found",
       });
     }
-    res.json({ user });
+    res.json(user);
   } catch (error) {
     console.error("get me error:", error);
     res.status(500).json({

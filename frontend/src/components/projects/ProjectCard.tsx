@@ -131,18 +131,8 @@ export default function ProjectCard({ project, onDelete }: Props) {
 
           {project.owner && (
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <Avatar
-                sx={{
-                  width: 24,
-                  height: 24,
-                  fontSize: "0.875rem",
-                  bgcolor: "primary.main",
-                }}
-              >
-                {project.owner.username.charAt(0).toUpperCase()}
-              </Avatar>
               <Typography variant="caption" color="text.secondary">
-                {project.owner.username}
+                Owner: {project.owner.username}
               </Typography>
             </Box>
           )}

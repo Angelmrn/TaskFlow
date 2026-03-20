@@ -1,5 +1,4 @@
-const BASE_URL = "http://localhost:1234/api";
-const getToken = () => localStorage.getItem("accessToken");
+import { apiFetch } from "./fetch";
 
 export interface User {
   id: number;
@@ -18,18 +17,12 @@ export const register = async (
   email: string,
   password: string,
 ): Promise<AuthResponse> => {
-  const response = await fetch(`${BASE_URL}/register`, {
+  const response = await fetch(`http://localhost:1234/api/register`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, email, password }),
   });
-
-  if (!response.ok) {
-    throw new Error("Failed to register");
-  }
-
+  if (!response.ok) throw new Error("Failed to register");
   return response.json();
 };
 
@@ -37,45 +30,33 @@ export const login = async (
   email: string,
   password: string,
 ): Promise<AuthResponse> => {
-  const response = await fetch(`${BASE_URL}/login`, {
+  const response = await fetch(`http://localhost:1234/api/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+  });
+  if (!response.ok) throw new Error("Failed to login");
+  return response.json();
+};
+
+export const logout = async (): Promise<void> => {
+  const refreshToken = localStorage.getItem("refreshToken");
+  await fetch(`http://localhost:1234/api/logout`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
     },
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({ refreshToken }),
   });
-
-  if (!response.ok) {
-    throw new Error("Failed to login");
-  }
-
-  return response.json();
+  localStorage.removeItem("accessToken");
+  localStorage.removeItem("refreshToken");
 };
 
-export const logout = async (): Promise<void> => {};
-
 export const getMe = async (): Promise<User> => {
-  const response = await fetch(`${BASE_URL}/me`, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${getToken()}`,
-    },
-  });
-  if (!response.ok) {
-    throw new Error("Failed to fethc user");
-  }
-  return response.json();
+  return apiFetch("/me");
 };
 
 export const getUsers = async (): Promise<User[]> => {
-  const response = await fetch(`${BASE_URL}/users`, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${getToken()}`,
-    },
-  });
-  if (!response.ok) {
-    throw new Error("Failed to fethc users");
-  }
-  return response.json();
+  return apiFetch("/users");
 };
