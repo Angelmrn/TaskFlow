@@ -22,7 +22,10 @@ export const register = async (
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, email, password }),
   });
-  if (!response.ok) throw new Error("Failed to register");
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Register Error.");
+  }
   return response.json();
 };
 
@@ -35,7 +38,10 @@ export const login = async (
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
   });
-  if (!response.ok) throw new Error("Failed to login");
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Failed to login");
+  }
   return response.json();
 };
 

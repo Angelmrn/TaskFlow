@@ -32,6 +32,7 @@ import type { Task } from "../api/task";
 import TaskCard from "../components/tasks/TaskCard";
 import CreateTaskModal from "../components/tasks/CreateTaskModal";
 import AddMemberModal from "../components/members/addMemberModal";
+import { createProjectSchema } from "../schemas/project.schema";
 
 const COLORS = [
   { name: "Morado", value: "#8b5cf6" },
@@ -49,6 +50,7 @@ export default function ProjectPage() {
   const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [editError, setEditError] = useState("");
 
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -111,6 +113,17 @@ export default function ProjectPage() {
 
   const handleEditSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError("");
+    setEditError("");
+    const result = createProjectSchema.safeParse({
+      name: editName,
+      description: editDescription,
+      color: editColor,
+    });
+    if (!result.success) {
+      setEditError(result.error.issues[0].message);
+      return;
+    }
     try {
       await updateProject(
         { name: editName, description: editDescription, color: editColor },
@@ -290,6 +303,11 @@ export default function ProjectPage() {
         <form onSubmit={handleEditSubmit}>
           <DialogTitle>Editar Proyecto</DialogTitle>
           <DialogContent>
+            {editError && (
+              <Alert severity="error" sx={{ mb: 2 }}>
+                {editError}
+              </Alert>
+            )}
             <TextField
               fullWidth
               label="Nombre"

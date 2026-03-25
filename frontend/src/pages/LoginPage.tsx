@@ -9,6 +9,7 @@ import {
   Alert,
 } from "@mui/material";
 import { useAuth } from "../context/AuthContext";
+import { loginSchema } from "../schemas/auth.shcema";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -18,19 +19,26 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setError("");
+    const result = loginSchema.safeParse({
+      email,
+      password,
+    });
+
+    if (!result.success) {
+      setError(result.error.issues[0].message);
+      return;
+    }
     setLoading(true);
     try {
       await login(email, password);
       navigate("/");
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError("Error desconocido");
-      }
+    } catch (err: any) {
+      setError(err.message || "Login Error.");
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -53,7 +61,12 @@ export default function LoginPage() {
           </Alert>
         )}
 
-        <Box component="form" onSubmit={handleSubmit} sx={{ width: "100%" }}>
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          sx={{ width: "100%" }}
+          noValidate
+        >
           <TextField
             fullWidth
             label="Email"

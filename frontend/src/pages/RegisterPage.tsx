@@ -9,6 +9,7 @@ import {
   Alert,
 } from "@mui/material";
 import { useAuth } from "../context/AuthContext";
+import { registerSchema } from "../schemas/auth.shcema";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -19,15 +20,25 @@ export default function RegisterPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setError("");
+    const result = registerSchema.safeParse({
+      username,
+      email,
+      password,
+    });
+
+    if (!result.success) {
+      setError(result.error.issues[0].message);
+      return;
+    }
     setLoading(true);
     try {
       await register(username, email, password);
       navigate("/");
     } catch (err: any) {
-      setError(err.response?.data?.message || "Registration failed");
+      setError(err.message || "Registration failed");
     } finally {
       setLoading(false);
     }
