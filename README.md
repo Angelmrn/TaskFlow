@@ -214,6 +214,42 @@ npm run dev
 
 ### 📸 Screenshots
 
+### Login
+
+![Login](./docs/screenshots/TF_Login.png)
+
+### Register
+
+![Register](./docs/screenshots/TF_Register.png)
+
+### Dashboard
+
+![Dashboard](./docs/screenshots/TF_Dashboard.png)
+
+### Project Page
+
+![Project Page](./docs/screenshots/TF_ProjectPage.png)
+
+### Create Project
+
+![Create Project](./docs/screenshots/TF_CreateProject.png)
+
+### Edit Project
+
+![Edit Project](./docs/screenshots/TF_EditProject.png)
+
+### Add Member
+
+![Add Member](./docs/screenshots/TF_AddMember.png)
+
+### Create Task
+
+![Create Task](./docs/screenshots/TF_CreateTask.png)
+
+### Edit Task
+
+![Edit Tasl](./docs/screenshots/TF_EditTask.png)
+
 ### 🗄️ Modelo de Base de Datos
 
 ```
@@ -380,6 +416,42 @@ npm run dev
 ---
 
 ### 📸 Screenshots
+
+### Login
+
+![Login](./docs/screenshots/TF_Login.png)
+
+### Register
+
+![Register](./docs/screenshots/TF_Register.png)
+
+### Dashboard
+
+![Dashboard](./docs/screenshots/TF_Dashboard.png)
+
+### Project Page
+
+![Project Page](./docs/screenshots/TF_ProjectPage.png)
+
+### Create Project
+
+![Create Project](./docs/screenshots/TF_CreateProject.png)
+
+### Edit Project
+
+![Edit Project](./docs/screenshots/TF_EditProject.png)
+
+### Add Member
+
+![Add Member](./docs/screenshots/TF_AddMember.png)
+
+### Create Task
+
+![Create Task](./docs/screenshots/TF_CreateTask.png)
+
+### Edit Task
+
+![Edit Tasl](./docs/screenshots/TF_EditTask.png)
 
 ### 🗄️ Database Model
 

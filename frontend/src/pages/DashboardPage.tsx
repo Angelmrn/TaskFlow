@@ -95,10 +95,10 @@ export default function DashboardPage() {
         >
           <Box>
             <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
-              ¡Hola de nuevo, {user?.username}!
+              ¡Welcome, {user?.username}!
             </Typography>
             <Typography variant="body1" color="text.secondary">
-              Gestiona tus proyectos y tareas en un solo lugar
+              Manage your projects and tasks in one place{" "}
             </Typography>
           </Box>
           <Button
@@ -111,7 +111,7 @@ export default function DashboardPage() {
               px: 3,
             }}
           >
-            Nuevo Proyecto
+            New Project
           </Button>
         </Box>
       </Box>
@@ -137,7 +137,7 @@ export default function DashboardPage() {
                     {stats.totalProjects}
                   </Typography>
                   <Typography variant="body2" sx={{ opacity: 0.9 }}>
-                    Total Proyectos
+                    Total Projects
                   </Typography>
                 </Box>
                 <FolderOpen sx={{ fontSize: 48, opacity: 0.3 }} />
@@ -166,7 +166,7 @@ export default function DashboardPage() {
                     {stats.ownedProjects}
                   </Typography>
                   <Typography variant="body2" sx={{ opacity: 0.9 }}>
-                    Creados por mí
+                    Created by me
                   </Typography>
                 </Box>
                 <People sx={{ fontSize: 48, opacity: 0.3 }} />
@@ -195,7 +195,7 @@ export default function DashboardPage() {
                     {stats.memberProjects}
                   </Typography>
                   <Typography variant="body2" sx={{ opacity: 0.9 }}>
-                    Como Miembro
+                    As a Member
                   </Typography>
                 </Box>
                 <People sx={{ fontSize: 48, opacity: 0.3 }} />
@@ -231,7 +231,7 @@ export default function DashboardPage() {
                 sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}
               >
                 <Typography variant="h5" sx={{ fontWeight: 600 }}>
-                  Mis Proyectos
+                  My Projects
                 </Typography>
                 <Chip
                   label={stats.ownedProjects}
@@ -261,7 +261,7 @@ export default function DashboardPage() {
                 sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}
               >
                 <Typography variant="h5" sx={{ fontWeight: 600 }}>
-                  Proyectos Compartidos
+                  Shared Projects
                 </Typography>
                 <Chip
                   label={stats.memberProjects}

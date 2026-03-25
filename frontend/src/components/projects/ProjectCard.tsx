@@ -119,7 +119,7 @@ export default function ProjectCard({ project, onDelete }: Props) {
               minHeight: "40px",
             }}
           >
-            {project.description || "Sin descripción"}
+            {project.description || "No description"}
           </Typography>
 
           <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
@@ -128,7 +128,7 @@ export default function ProjectCard({ project, onDelete }: Props) {
                 {project._count?.task || 0}
               </Typography>
               <Typography variant="caption" color="text.secondary">
-                tareas
+                tasks
               </Typography>
             </Box>
 
@@ -151,7 +151,7 @@ export default function ProjectCard({ project, onDelete }: Props) {
 
         <CardActions sx={{ pt: 0, px: 2, pb: 2 }}>
           <Typography variant="caption" color="text.secondary">
-            Creado {new Date(project.createdAt).toLocaleDateString("es-MX")}
+            Created {new Date(project.createdAt).toLocaleDateString("es-MX")}
           </Typography>
         </CardActions>
       </Card>

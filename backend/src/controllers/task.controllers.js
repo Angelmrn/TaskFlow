@@ -45,10 +45,9 @@ export const updateTask = async (req, res) => {
   try {
     const result = updateTaskSchema.safeParse(req.body);
     if (!result.success) {
-      return res.status(400).json({
-        message: "Validation error",
-        errors: result.error.errors,
-      });
+      return res
+        .status(400)
+        .json({ message: "Validation error", errors: result.error.errors });
     }
     const { id } = req.params;
     const task = await prisma.task.update({

@@ -1,5 +1,5 @@
 import { apiFetch } from "./fetch";
-
+import type { CreateProjectData } from "../schemas/project.schema";
 export interface Project {
   id: number;
   name: string;
@@ -16,12 +16,6 @@ export interface Project {
     task: number;
     members: number;
   };
-}
-
-export interface CreateProjectData {
-  name: string;
-  description?: string;
-  color?: string;
 }
 
 export const getMyProjects = async (): Promise<Project[]> => {

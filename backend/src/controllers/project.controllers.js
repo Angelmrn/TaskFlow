@@ -114,6 +114,11 @@ export const updateProject = async (req, res) => {
       project,
     });
   } catch (error) {
+    if (error.code === "P2025") {
+      return res.status(403).json({
+        message: "Only Project Owner can edit.",
+      });
+    }
     console.error(error);
     res.status(500).json({
       message: "Internal server error",
@@ -142,6 +147,11 @@ export const deleteProject = async (req, res) => {
     });
     res.json({ message: "Project deleted succesfully" });
   } catch (error) {
+    if (error.code === "P2025") {
+      return res.status(403).json({
+        message: "Only Project Owner can delete.",
+      });
+    }
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }

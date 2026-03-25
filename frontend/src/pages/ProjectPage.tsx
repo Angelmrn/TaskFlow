@@ -33,6 +33,8 @@ import TaskCard from "../components/tasks/TaskCard";
 import CreateTaskModal from "../components/tasks/CreateTaskModal";
 import AddMemberModal from "../components/members/addMemberModal";
 import { createProjectSchema } from "../schemas/project.schema";
+import { updateTaskSchema } from "../schemas/task.schema";
+import EditIcon from "@mui/icons-material/Edit";
 
 const COLORS = [
   { name: "Morado", value: "#8b5cf6" },
@@ -132,7 +134,7 @@ export default function ProjectPage() {
       setEditModalOpen(false);
       loadProject();
     } catch (err: any) {
-      setError(err.message || "Error al actualizar");
+      setEditError(err.message || "Error al actualizar");
     }
   };
 
@@ -145,11 +147,19 @@ export default function ProjectPage() {
       assigneeId?: number;
     },
   ) => {
+    const result = updateTaskSchema.safeParse(data);
+    if (!result.success) {
+      const errorMessage = result.error.issues[0].message;
+      setEditError(errorMessage);
+      throw new Error(errorMessage);
+    }
     try {
       await updateTask(data, Number(projectId), taskId);
       await loadTasks();
     } catch (err: any) {
-      setError(err.message || "Error al editar tarea");
+      const errorMsg = err.message || "Error al editar tarea";
+      setEditError(errorMsg);
+      throw new Error(errorMsg);
     }
   };
 
@@ -183,7 +193,7 @@ export default function ProjectPage() {
           <ArrowBack />
         </IconButton>
 
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ flexGrow: 1, minWidth: 0 }}>
           <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 1 }}>
             <Box
               sx={{
@@ -191,18 +201,33 @@ export default function ProjectPage() {
                 height: 24,
                 borderRadius: "50%",
                 bgcolor: project.color || "#8b5cf6",
+                overflow: "hidden",
               }}
             />
-            <Typography variant="h4" sx={{ fontWeight: 700 }}>
+            <Typography
+              variant="h4"
+              sx={{
+                fontWeight: 700,
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
               {project.name}
             </Typography>
           </Box>
           <Typography
             variant="body1"
             color="text.secondary"
-            sx={{ whiteSpace: "pre-wrap" }}
+            sx={{
+              whiteSpace: "pre-wrap",
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+            }}
           >
-            {project.description || "Sin descripción"}
+            {project.description || "No description"}
           </Typography>
         </Box>
 
@@ -212,14 +237,14 @@ export default function ProjectPage() {
             startIcon={<PersonAdd />}
             onClick={() => setAddMemberModalOpen(true)}
           >
-            Agregar Miembro
+            Add Member
           </Button>
           <Button
             variant="outlined"
             startIcon={<Edit />}
             onClick={() => setEditModalOpen(true)}
           >
-            Editar
+            Edit
           </Button>
           <Button
             variant="outlined"
@@ -227,7 +252,7 @@ export default function ProjectPage() {
             startIcon={<Delete />}
             onClick={() => setDeleteModalOpen(true)}
           >
-            Eliminar
+            Delete
           </Button>
         </Box>
       </Box>
@@ -235,14 +260,14 @@ export default function ProjectPage() {
       <Box sx={{ mt: 6 }}>
         <Box sx={{ display: "flex", justifyContent: "space-between", mb: 3 }}>
           <Typography variant="h5" sx={{ fontWeight: 600 }}>
-            Tareas
+            Tasks
           </Typography>
           <Button
             variant="outlined"
             onClick={() => setModalOpen(true)}
             startIcon={<AddTask />}
           >
-            Nueva Tarea
+            New Task
           </Button>
         </Box>
 
@@ -253,17 +278,17 @@ export default function ProjectPage() {
           >
             <CardContent>
               <Typography variant="h6" color="text.secondary">
-                No hay tareas en este proyecto
+                There are no tasks in this project
               </Typography>
               <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                Crea la primera tarea para empezar a trabajar.
+                Create the first task to start working.
               </Typography>
               <Button
                 variant="outlined"
                 onClick={() => setModalOpen(true)}
                 startIcon={<AddTask />}
               >
-                Agregar Tarea
+                New Task
               </Button>
             </CardContent>
           </Card>
@@ -276,6 +301,7 @@ export default function ProjectPage() {
                   projectId={Number(projectId)}
                   onEdit={handleEditTask}
                   onDelete={handleDeleteTask}
+                  error={editError}
                 />
               </Grid>
             ))}
@@ -301,7 +327,12 @@ export default function ProjectPage() {
         fullWidth
       >
         <form onSubmit={handleEditSubmit}>
-          <DialogTitle>Editar Proyecto</DialogTitle>
+          <DialogTitle>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <EditIcon />
+              <Typography variant="h6">Edit Project</Typography>
+            </Box>
+          </DialogTitle>
           <DialogContent>
             {editError && (
               <Alert severity="error" sx={{ mb: 2 }}>
@@ -310,7 +341,7 @@ export default function ProjectPage() {
             )}
             <TextField
               fullWidth
-              label="Nombre"
+              label="Name"
               margin="normal"
               required
               value={editName}
@@ -318,7 +349,7 @@ export default function ProjectPage() {
             />
             <TextField
               fullWidth
-              label="Descripción"
+              label="Description"
               margin="normal"
               multiline
               rows={3}
@@ -348,9 +379,9 @@ export default function ProjectPage() {
             </Box>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setEditModalOpen(false)}>Cancelar</Button>
+            <Button onClick={() => setEditModalOpen(false)}>Cancel</Button>
             <Button type="submit" variant="contained">
-              Guardar Cambios
+              Save Changes
             </Button>
           </DialogActions>
         </form>

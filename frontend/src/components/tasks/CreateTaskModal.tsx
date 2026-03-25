@@ -17,6 +17,7 @@ import {
 import { Add } from "@mui/icons-material";
 import { postNewTask } from "../../api/task";
 import { getProjectMembers, type Member } from "../../api/members";
+import { createTaskSchema } from "../../schemas/task.schema";
 
 interface Props {
   open: boolean;
@@ -46,8 +47,17 @@ export default function CreateTaskModal({
       return;
     }
     setError("");
-    setLoading(true);
 
+    const result = createTaskSchema.safeParse({
+      title,
+      description,
+      status: status,
+    });
+    if (!result.success) {
+      setError(result.error.issues[0].message);
+      return;
+    }
+    setLoading(true);
     try {
       await postNewTask(
         {
@@ -93,7 +103,7 @@ export default function CreateTaskModal({
       <DialogTitle>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <Add />
-          <Typography variant="h6">Crear Nueva Tarea</Typography>
+          <Typography variant="h6">Create New Task</Typography>
         </Box>
       </DialogTitle>
 
@@ -107,24 +117,24 @@ export default function CreateTaskModal({
 
           <TextField
             fullWidth
-            label="Titulo de la Tarea"
+            label="Task Title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             margin="normal"
             required
             autoFocus
-            placeholder="Ej: Desarrollo de TaskFlow"
+            placeholder="Ex:Taskflow Development"
           />
 
           <TextField
             fullWidth
-            label="Descripción"
+            label="Description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             margin="normal"
             multiline
             rows={3}
-            placeholder="Describe de qué trata este proyecto..."
+            placeholder="Describe what this project is about..."
           />
           <FormControl fullWidth margin="normal">
             <InputLabel>Status</InputLabel>
@@ -133,20 +143,20 @@ export default function CreateTaskModal({
               label="Status"
               onChange={(e) => setStatus(e.target.value)}
             >
-              <MenuItem value="pending">Pendiente</MenuItem>
-              <MenuItem value="in_progress">En progreso</MenuItem>
-              <MenuItem value="completed">Completado</MenuItem>
+              <MenuItem value="pending">Pending</MenuItem>
+              <MenuItem value="in_progress">In Progres</MenuItem>
+              <MenuItem value="completed">Completed</MenuItem>
             </Select>
           </FormControl>
 
           <FormControl fullWidth margin="normal">
-            <InputLabel>Asignado a</InputLabel>
+            <InputLabel>Assigned to</InputLabel>
             <Select
               value={assigneeId}
               label="Asignado a"
               onChange={(e) => setAssigneeId(e.target.value)}
             >
-              <MenuItem value="">Sin asignar</MenuItem>
+              <MenuItem value="">Unassigned</MenuItem>
               {member.map((member) => (
                 <MenuItem key={member.userId} value={String(member.userId)}>
                   {" "}
@@ -159,14 +169,14 @@ export default function CreateTaskModal({
 
         <DialogActions sx={{ px: 3, pb: 3 }}>
           <Button onClick={handleClose} disabled={loading}>
-            Cancelar
+            Cancel
           </Button>
           <Button
             type="submit"
             variant="contained"
             disabled={loading || !title}
           >
-            {loading ? "Creando..." : "Crear Tarea"}
+            {loading ? "Creating..." : "Create Task"}
           </Button>
         </DialogActions>
       </form>

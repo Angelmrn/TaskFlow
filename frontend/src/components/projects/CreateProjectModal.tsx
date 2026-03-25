@@ -21,7 +21,7 @@ interface Props {
 }
 
 const COLORS = [
-  { name: "Naranja", value: "#d3864f" },
+  { name: "Naranja", value: "#d18b59" },
   { name: "Rojo", value: "#ce5959" },
   { name: "Amarillo", value: "#dfba4e" },
   { name: "Cyan", value: "#06b6d4" },
@@ -76,7 +76,7 @@ export default function CreateProjectModal({
       <DialogTitle>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <Add />
-          <Typography variant="h6">Crear Nuevo Proyecto</Typography>
+          <Typography variant="h6">Create New Project</Typography>
         </Box>
       </DialogTitle>
 
@@ -90,24 +90,24 @@ export default function CreateProjectModal({
 
           <TextField
             fullWidth
-            label="Nombre del Proyecto"
+            label="Project Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             margin="normal"
             required
             autoFocus
-            placeholder="Ej: Desarrollo de TaskFlow"
+            placeholder="Ex: Taskflow Development"
           />
 
           <TextField
             fullWidth
-            label="Descripción"
+            label="Description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             margin="normal"
             multiline
             rows={3}
-            placeholder="Describe de qué trata este proyecto..."
+            placeholder="Describe what this project is about..."
           />
 
           <Box sx={{ mt: 3 }}>
@@ -159,20 +159,30 @@ export default function CreateProjectModal({
                 minWidth: 0,
               }}
             >
-              {name || "Nombre del proyecto"}
+              {name || "Project name"}
             </Typography>
-            <Typography variant="body2" sx={{ mt: 1, opacity: 0.9 }}>
-              {description || "Descripción del proyecto"}
+            <Typography
+              variant="body2"
+              sx={{
+                mt: 1,
+                opacity: 0.9,
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                minWidth: 0,
+              }}
+            >
+              {description || "Project Description"}
             </Typography>
           </Box>
         </DialogContent>
 
         <DialogActions sx={{ px: 3, pb: 3 }}>
           <Button onClick={handleClose} disabled={loading}>
-            Cancelar
+            Cancel
           </Button>
           <Button type="submit" variant="contained" disabled={loading || !name}>
-            {loading ? "Creando..." : "Crear Proyecto"}
+            {loading ? "Creating..." : "Create Project"}
           </Button>
         </DialogActions>
       </form>

@@ -18,11 +18,13 @@ import {
   MenuItem,
   Divider,
   Avatar,
+  Alert,
 } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
 import type { Task } from "../../api/task";
 import DeleteDialog from "../deleteModal";
 import { getProjectMembers, type Member } from "../../api/members";
+import EditIcon from "@mui/icons-material/Edit";
 
 interface Props {
   task: Task;
@@ -37,6 +39,7 @@ interface Props {
       assigneeId?: number;
     },
   ) => void;
+  error?: string;
 }
 
 const statusConfig: Record<
@@ -44,21 +47,21 @@ const statusConfig: Record<
   { label: string; color: string; bg: string; dot: string; accent: string }
 > = {
   pending: {
-    label: "Pendiente",
+    label: "Pending",
     color: "#633806",
     bg: "#FAEEDA",
     dot: "#BA7517",
     accent: "#d47651",
   },
   in_progress: {
-    label: "En progreso",
+    label: "In Progress",
     color: "#0C447C",
     bg: "#E6F1FB",
     dot: "#185FA5",
     accent: "#376ca1",
   },
   completed: {
-    label: "Completado",
+    label: "Completed",
     color: "#27500A",
     bg: "#EAF3DE",
     dot: "#3B6D11",
@@ -75,7 +78,13 @@ function getInitials(name: string) {
     .slice(0, 2);
 }
 
-export default function TaskCard({ task, projectId, onDelete, onEdit }: Props) {
+export default function TaskCard({
+  task,
+  projectId,
+  onDelete,
+  onEdit,
+  error,
+}: Props) {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [status, setStatus] = useState(task.status || "pending");
@@ -95,15 +104,19 @@ export default function TaskCard({ task, projectId, onDelete, onEdit }: Props) {
     setDeleteModalOpen(false);
   };
 
-  const handleEditSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleEditSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onEdit?.(task.id, {
-      title: editTitle,
-      description: editDescription,
-      status,
-      assigneeId: assigneeId !== "" ? Number(assigneeId) : undefined,
-    });
-    setEditModalOpen(false);
+    try {
+      await onEdit?.(task.id, {
+        title: editTitle,
+        description: editDescription,
+        status,
+        assigneeId: assigneeId !== "" ? Number(assigneeId) : undefined,
+      });
+      setEditModalOpen(false);
+    } catch (error) {
+      console.error("Error on Edit Task.");
+    }
   };
 
   useEffect(() => {
@@ -175,7 +188,7 @@ export default function TaskCard({ task, projectId, onDelete, onEdit }: Props) {
               lineHeight: 1.5,
             }}
           >
-            {task.description || "Sin descripción"}
+            {task.description || "No description"}
           </Typography>
         </CardContent>
 
@@ -245,8 +258,18 @@ export default function TaskCard({ task, projectId, onDelete, onEdit }: Props) {
         fullWidth
       >
         <form onSubmit={handleEditSubmit}>
-          <DialogTitle>Editar tarea</DialogTitle>
+          <DialogTitle>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <EditIcon />
+              <Typography variant="h6">Edit Task</Typography>
+            </Box>
+          </DialogTitle>
           <DialogContent>
+            {error && (
+              <Alert severity="error" sx={{ mb: 2 }}>
+                {error}
+              </Alert>
+            )}
             <TextField
               fullWidth
               label="Título"
@@ -271,9 +294,9 @@ export default function TaskCard({ task, projectId, onDelete, onEdit }: Props) {
                 label="Status"
                 onChange={(e) => setStatus(e.target.value)}
               >
-                <MenuItem value="pending">Pendiente</MenuItem>
-                <MenuItem value="in_progress">En progreso</MenuItem>
-                <MenuItem value="completed">Completado</MenuItem>
+                <MenuItem value="pending">Pending</MenuItem>
+                <MenuItem value="in_progress">In Progress</MenuItem>
+                <MenuItem value="completed">Completed</MenuItem>
               </Select>
             </FormControl>
             <FormControl fullWidth margin="normal">
@@ -293,9 +316,9 @@ export default function TaskCard({ task, projectId, onDelete, onEdit }: Props) {
             </FormControl>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setEditModalOpen(false)}>Cancelar</Button>
+            <Button onClick={() => setEditModalOpen(false)}>Cancel</Button>
             <Button type="submit" variant="contained">
-              Guardar
+              Save
             </Button>
           </DialogActions>
         </form>

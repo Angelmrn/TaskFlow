@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   Box,
   TextField,
@@ -98,6 +98,23 @@ export default function RegisterPage() {
           >
             {loading ? "Registering..." : "Register"}
           </Button>
+          <Typography
+            variant="body2"
+            align="center"
+            sx={{
+              color: "text.secondary",
+              "& a": {
+                color: "primary.light",
+                textDecoration: "none",
+                fontWeight: "bold",
+                "&:hover": {
+                  textDecoration: "underline",
+                },
+              },
+            }}
+          >
+            <Link to="/login">Go Back</Link>
+          </Typography>
         </Box>
       </Box>
     </Container>

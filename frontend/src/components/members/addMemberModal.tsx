@@ -89,7 +89,7 @@ export default function AddMemberModal({
       <DialogTitle>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <PersonAdd />
-          <Typography variant="h6">Agregar Miembro</Typography>
+          <Typography variant="h6">Add Member</Typography>
         </Box>
       </DialogTitle>
 
@@ -102,13 +102,13 @@ export default function AddMemberModal({
           )}
 
           <FormControl fullWidth margin="normal">
-            <InputLabel>Usuario</InputLabel>
+            <InputLabel>User</InputLabel>
             <Select
               value={userId}
-              label="Usuario"
+              label="User"
               onChange={(e) => setUserId(e.target.value)}
             >
-              <MenuItem value="">Selecciona un usuario</MenuItem>
+              <MenuItem value="">Select a user</MenuItem>
               {users.map((user) => (
                 <MenuItem key={user.id} value={String(user.id)}>
                   {user.username}
@@ -118,13 +118,13 @@ export default function AddMemberModal({
           </FormControl>
 
           <FormControl fullWidth margin="normal">
-            <InputLabel>Rol</InputLabel>
+            <InputLabel>Role</InputLabel>
             <Select
               value={role}
-              label="Rol"
+              label="Role"
               onChange={(e) => setRole(e.target.value)}
             >
-              <MenuItem value="member">Miembro</MenuItem>
+              <MenuItem value="member">Member</MenuItem>
               <MenuItem value="admin">Admin</MenuItem>
             </Select>
           </FormControl>
@@ -132,14 +132,14 @@ export default function AddMemberModal({
 
         <DialogActions sx={{ px: 3, pb: 3 }}>
           <Button onClick={handleClose} disabled={loading}>
-            Cancelar
+            Cancel
           </Button>
           <Button
             type="submit"
             variant="contained"
             disabled={loading || !userId}
           >
-            {loading ? "Agregando..." : "Agregar Miembro"}{" "}
+            {loading ? "Adding..." : "Add Member"}{" "}
           </Button>
         </DialogActions>
       </form>
